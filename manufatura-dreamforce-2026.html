@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Manufatura | Dreamforce 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  color-scheme:light;
+  --sf-blue:#0035B0;--sf-mid:#0050CC;--sf-light:#00A1E0;
+  --mn-blue:#0066CC;--mn-teal:#00BFA5;--teal:#00C9A7;
+  --purple:#6B4FBB;--purple-dark:#4A3080;--purple-light:#8B6FDB;
+  --cream:#F5F7FA;--white:#fff;--text:#0D1B2A;--muted:#5A6A78;
+  --border:rgba(0,53,176,0.1);
+  --nav-h:56px;--bnav-h:64px;
+  --r:14px;--rs:8px;
+  --sh:0 2px 12px rgba(0,53,176,0.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);padding-top:var(--nav-h);padding-bottom:var(--bnav-h);}
+.topbar{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav-h);
+  background:linear-gradient(90deg,#003366 0%,#0050CC 100%);
+  display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;
+  box-shadow:0 2px 16px rgba(0,0,0,0.25);}
+.topbar-title{font-size:15px;font-weight:700;color:#fff;letter-spacing:0.01em;}
+.topbar-title span{color:#00E5CC;}
+.lang-btn{background:rgba(0,229,204,0.18);border:1.5px solid rgba(0,229,204,0.45);
+  color:#00E5CC;font-size:12px;font-weight:700;padding:5px 13px;
+  border-radius:20px;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:0.05em;transition:all 0.2s;}
+.lang-btn:hover{background:rgba(0,229,204,0.3);}
+.bnav{position:fixed;bottom:0;left:0;right:0;z-index:300;height:var(--bnav-h);
+  background:#fff;border-top:1px solid var(--border);
+  display:flex;box-shadow:0 -4px 16px rgba(0,53,176,0.08);}
+.bi{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;border:none;background:none;cursor:pointer;font-family:'Inter',sans-serif;
+  color:var(--muted);transition:color 0.2s;padding:6px 2px;}
+.bi.active{color:var(--mn-blue);}
+.bi .ico{font-size:20px;line-height:1;}
+.bi .lbl{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;}
+.page{display:none;}
+.page.active{display:block;}
+.section{max-width:640px;margin:0 auto;padding:1.75rem 1.25rem;}
+.sh{margin-bottom:1.25rem;}
+.slabel{font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--mn-blue);margin-bottom:3px;}
+.stitle{font-size:1.4rem;font-weight:800;color:var(--sf-blue);letter-spacing:-0.01em;line-height:1.2;}
+.back-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--purple);font-size:12px;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;padding:0.75rem 1.25rem 0;letter-spacing:0.02em;}
+/* CHECKLIST */
+.cg{margin-bottom:1.25rem;}
+.cg-title{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--sf-blue);margin-bottom:0.6rem;display:flex;align-items:center;gap:7px;}
+.cc{background:#fff;border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;}
+.ci{display:flex;align-items:flex-start;gap:12px;padding:11px 14px;
+  border-bottom:1px solid rgba(0,53,176,0.06);cursor:pointer;transition:background 0.15s;}
+.ci:last-child{border-bottom:none;}
+.ci input[type=checkbox]{width:20px;height:20px;flex-shrink:0;margin-top:1px;accent-color:var(--mn-blue);cursor:pointer;}
+.ct .en{font-size:13px;font-weight:500;color:var(--text);line-height:1.4;}
+.ct .pt{font-size:12px;color:var(--muted);margin-top:2px;font-style:italic;}
+.ci.done .ct .en{text-decoration:line-through;opacity:0.4;}
+/* TIP CARD */
+.tc{background:#fff;border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);margin-bottom:1rem;overflow:hidden;}
+.tch{background:var(--sf-blue);padding:11px 15px;display:flex;align-items:center;gap:9px;}
+.tch .ico{font-size:18px;}
+.tch .lbl{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#00E5CC;}
+.ti{padding:11px 15px;border-bottom:1px solid rgba(0,53,176,0.05);}
+.ti:last-child{border-bottom:none;}
+.ti strong{font-size:13px;font-weight:600;color:var(--sf-blue);display:block;margin-bottom:2px;}
+.ti .d{font-size:12px;color:var(--muted);line-height:1.5;}
+.ti a{color:var(--sf-mid);text-decoration:none;font-size:11px;}
+.dist{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;
+  color:var(--mn-blue);background:rgba(0,102,204,0.08);border-radius:4px;padding:2px 7px;margin-top:4px;}
+/* MAP */
+.map-wrap{background:#fff;border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;margin-bottom:1rem;}
+.map-open-btn{display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 16px;background:var(--sf-blue);color:#fff;text-decoration:none;
+  font-size:13px;font-weight:700;letter-spacing:0.03em;}
+.map-open-btn:hover{background:var(--sf-mid);}
+.map-legend{padding:1rem 1rem 0.5rem;}
+.map-legend-title{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--sf-blue);margin-bottom:0.75rem;}
+.map-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 8px;}
+.mv{display:flex;align-items:flex-start;gap:8px;padding:5px 0;}
+.mn-dot{width:22px;height:22px;border-radius:50%;background:var(--sf-blue);color:#fff;
+  font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.mi strong{font-size:12px;font-weight:600;color:var(--text);display:block;line-height:1.3;}
+.mi span{font-size:10px;color:var(--muted);}
+/* EVENT TIPS */
+.etip{background:#fff;border-radius:var(--r);border:1px solid var(--border);
+  border-left:4px solid var(--mn-blue);box-shadow:var(--sh);
+  padding:1rem 1.1rem;margin-bottom:0.9rem;display:flex;gap:11px;}
+.etip .eico{font-size:22px;flex-shrink:0;margin-top:1px;}
+.etip h4{font-size:13px;font-weight:700;color:var(--sf-blue);margin-bottom:3px;}
+.etip .en{font-size:12px;color:var(--text);line-height:1.55;}
+.etip .pt{font-size:12px;color:var(--muted);font-style:italic;line-height:1.5;margin-top:3px;}
+/* BR COMPANIES */
+.br-section{margin-bottom:1.5rem;}
+.br-title{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--mn-blue);margin-bottom:0.75rem;display:flex;align-items:center;gap:7px;}
+.br-list{background:#fff;border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;}
+.br-item{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:12px 15px;border-bottom:1px solid rgba(0,53,176,0.05);}
+.br-item:last-child{border-bottom:none;}
+.br-co{font-size:13px;font-weight:700;color:var(--sf-blue);}
+.br-link{font-size:11px;font-weight:600;color:var(--purple);text-decoration:none;
+  background:rgba(107,79,187,0.08);border-radius:4px;padding:3px 8px;white-space:nowrap;flex-shrink:0;}
+.br-link:hover{background:rgba(107,79,187,0.16);}
+/* CONTACTS */
+.contact-item{display:flex;align-items:center;gap:14px;padding:14px 16px;border-bottom:1px solid rgba(0,53,176,0.05);}
+.contact-item:last-child{border-bottom:none;}
+.contact-avatar{width:44px;height:44px;border-radius:50%;
+  background:linear-gradient(135deg,var(--mn-blue),var(--sf-blue));
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:800;color:#fff;flex-shrink:0;}
+.contact-info strong{font-size:14px;font-weight:700;color:var(--text);display:block;}
+.contact-info span{font-size:12px;color:var(--muted);}
+.wa-btn{margin-left:auto;flex-shrink:0;display:flex;align-items:center;gap:5px;
+  background:#25D366;color:#fff;text-decoration:none;
+  font-size:11px;font-weight:700;padding:7px 12px;border-radius:8px;transition:background 0.2s;}
+.wa-btn:hover{background:#1da851;}
+/* SESSIONS */
+.day-tabs{display:flex;gap:6px;margin-bottom:1.25rem;overflow-x:auto;padding-bottom:4px;}
+.dt{flex-shrink:0;padding:7px 18px;border-radius:30px;border:1.5px solid var(--border);
+  background:#fff;font-size:12px;font-weight:600;color:var(--muted);
+  cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;}
+.dt.active{background:var(--purple);color:#fff;border-color:var(--purple);}
+.tl-legend{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1rem;
+  padding:9px 12px;background:#fff;border-radius:var(--rs);border:1px solid var(--border);}
+.lli{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted);}
+.ldot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.tl{position:relative;padding-left:34px;}
+.tl::before{content:'';position:absolute;left:10px;top:8px;bottom:8px;
+  width:2px;background:linear-gradient(to bottom,#00E5CC,rgba(0,229,204,0.1));}
+.tli{position:relative;margin-bottom:0.9rem;}
+.tldo{position:absolute;left:-28px;top:13px;width:10px;height:10px;border-radius:50%;
+  background:#00E5CC;border:2px solid var(--cream);box-shadow:0 0 0 2px #00E5CC;}
+.tldo.exec{background:var(--sf-blue);box-shadow:0 0 0 2px var(--sf-blue);}
+.tldo.travel{background:var(--muted);box-shadow:0 0 0 2px var(--muted);}
+.tldo.kn{background:var(--purple);box-shadow:0 0 0 3px var(--purple);}
+.tlc{background:#fff;border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);padding:0.9rem 1rem;}
+.tlc.travel{background:rgba(90,106,120,0.07);border:1px dashed rgba(90,106,120,0.3);box-shadow:none;padding:0.5rem 0.9rem;}
+.tlc.travel h4{font-size:11px;color:var(--muted);font-weight:500;}
+.tlc.kn{background:linear-gradient(to right,#f5f0ff,#fff);border-left:4px solid var(--purple);}
+.tlc.exec{border-left:4px solid var(--sf-blue);}
+.tlc.mn{border-left:4px solid var(--mn-blue);background:linear-gradient(to right,#f0f6ff,#fff);}
+.tlt{font-size:10px;font-weight:700;color:var(--mn-blue);letter-spacing:0.08em;
+  margin-bottom:3px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.tlb{font-size:8px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  padding:2px 6px;border-radius:3px;background:var(--sf-blue);color:#00E5CC;}
+.tlc h4{font-size:13px;font-weight:600;color:var(--sf-blue);margin-bottom:3px;line-height:1.3;}
+.tlc h4 a{color:var(--sf-blue);text-decoration:none;}
+.tlc h4 a:hover{text-decoration:underline;}
+.tlc .en{font-size:11px;color:var(--text);line-height:1.5;}
+.tlc .pt{font-size:11px;color:var(--muted);font-style:italic;line-height:1.5;margin-top:2px;}
+.tlm{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+.tlm span{font-size:10px;color:var(--muted);}
+.reserved{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;
+  color:#fff;background:var(--mn-blue);border-radius:3px;padding:2px 6px;}
+/* LANGUAGE */
+body.lang-pt .en{display:none!important;}
+body.lang-pt .pt{display:block!important;font-size:inherit!important;color:inherit!important;font-style:normal!important;margin:0!important;}
+body.lang-pt .hero-sub-en{display:none!important;}
+body.lang-pt .hero-sub-pt{display:block!important;}
+body:not(.lang-pt) .pt{display:none!important;}
+body:not(.lang-pt) .hero-sub-pt{display:none!important;}
+@media(min-width:640px){.section{padding:2rem 2rem;}}
+.industry-filter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.25rem;}
+.ifbtn{flex-shrink:0;padding:7px 14px;border-radius:30px;border:1.5px solid var(--border);
+  background:#fff;font-size:11px;font-weight:700;color:var(--muted);
+  cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;letter-spacing:0.02em;}
+.ifbtn.active{background:var(--sf-blue);color:#fff;border-color:var(--sf-blue);}
+.ifbtn[data-filter="mfg"].active{background:#0066CC;border-color:#0066CC;}
+.ifbtn[data-filter="eu"].active{background:#00875A;border-color:#00875A;}
+.ifbtn[data-filter="auto"].active{background:#7B4FBB;border-color:#7B4FBB;}
+.ifbtn[data-filter="br"].active{background:#009C3B;border-color:#009C3B;color:#FFDF00;}
+.ifbtn[data-filter="mkt"].active{background:#C44BC4;border-color:#C44BC4;color:#fff;}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-title">Manufatura | <span>Dreamforce 2026</span></div>
+  <button class="lang-btn" onclick="toggleLang()" id="langBtn">🇧🇷 PT</button>
+</header>
+
+<!-- ═══ HOME ═══ -->
+<div id="page-home" class="page active">
+<div style="background:linear-gradient(170deg,#001A33 0%,#003366 45%,#0050CC 100%);min-height:calc(100vh - var(--nav-h) - var(--bnav-h));display:flex;flex-direction:column;">
+  <div style="padding:2.5rem 1.5rem 1.5rem;position:relative;overflow:hidden;flex-shrink:0;">
+    <div style="position:absolute;top:14px;right:20px;font-size:28px;color:#00E5CC;opacity:0.5;line-height:1;">✦</div>
+    <div style="position:absolute;top:60%;left:6%;font-size:16px;color:var(--teal);opacity:0.35;">✦</div>
+    <div style="font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:0.6rem;">Guia Exclusivo · Exclusive Guide</div>
+    <h1 style="font-size:clamp(2.2rem,9vw,3.4rem);font-weight:900;color:#fff;line-height:1.05;letter-spacing:-0.03em;margin-bottom:0.4rem;">
+      Dreamforce<br><span style="color:#00E5CC;">2026</span>
+    </h1>
+    <div style="font-size:clamp(0.85rem,3.5vw,1.1rem);font-weight:600;color:#FFD700;letter-spacing:0.04em;margin-bottom:0.9rem;">Powered by Agentforce</div>
+    <p style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.6;max-width:300px;margin-bottom:1.25rem;">
+      <span class="en">Your personalized guide for an exceptional experience in San Francisco.</span>
+      <span class="pt">Seu guia personalizado para uma experiência excepcional em São Francisco.</span>
+    </p>
+    <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(0,102,204,0.2);border:1px solid rgba(0,229,204,0.4);border-radius:30px;padding:6px 16px;">
+      <span style="font-size:11px;font-weight:600;color:#fff;">San Francisco</span>
+      <span style="width:3px;height:3px;border-radius:50%;background:#00E5CC;"></span>
+      <span style="font-size:11px;font-weight:600;color:#fff;">Moscone Center</span>
+      <span style="width:3px;height:3px;border-radius:50%;background:#00E5CC;"></span>
+      <span style="font-size:11px;font-weight:600;color:#fff;">Sep 15–17, 2026</span>
+    </div>
+  </div>
+
+  <div style="padding:0 1.25rem 1.5rem;flex-shrink:0;">
+    <div style="font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.4);text-align:center;margin-bottom:0.5rem;">Agenda at a Glance</div>
+    <h2 style="font-size:clamp(1rem,4.5vw,1.35rem);font-weight:800;color:#fff;text-align:center;line-height:1.2;letter-spacing:-0.01em;margin-bottom:1rem;">
+      <span class="en">Three days. Limitless impact. Your move.</span>
+      <span class="pt">Três dias. Impacto ilimitado. Sua vez.</span>
+    </h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:0.9rem 0.75rem;text-align:center;">
+        <div style="font-size:1.75rem;font-weight:900;color:#fff;line-height:1;margin-bottom:4px;">1,600+</div>
+        <div style="width:24px;height:2px;background:#00C9A7;margin:0 auto 6px;border-radius:2px;"></div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.55);line-height:1.4;"><span class="en">Breakout sessions for all products &amp; industries</span><span class="pt">Sessões para todos os produtos e indústrias</span></div>
+      </div>
+      <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:0.9rem 0.75rem;text-align:center;">
+        <div style="font-size:1.75rem;font-weight:900;color:#fff;line-height:1;margin-bottom:4px;">50+</div>
+        <div style="width:24px;height:2px;background:#B060FF;margin:0 auto 6px;border-radius:2px;"></div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.55);line-height:1.4;"><span class="en">Visionary &amp; product keynotes</span><span class="pt">Keynotes visionários e de produto</span></div>
+      </div>
+      <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:0.9rem 0.75rem;text-align:center;">
+        <div style="font-size:1.75rem;font-weight:900;color:#fff;line-height:1;margin-bottom:4px;">150+</div>
+        <div style="width:24px;height:2px;background:#00E5CC;margin:0 auto 6px;border-radius:2px;"></div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.55);line-height:1.4;"><span class="en">Hands-on trainings &amp; demos</span><span class="pt">Treinamentos práticos e demos</span></div>
+      </div>
+      <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:0.9rem 0.75rem;text-align:center;">
+        <div style="font-size:1.75rem;font-weight:900;color:#fff;line-height:1;margin-bottom:4px;">240+</div>
+        <div style="width:24px;height:2px;background:#FF5A6E;margin:0 auto 6px;border-radius:2px;"></div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.55);line-height:1.4;"><span class="en">Community roundtables with your peers</span><span class="pt">Mesas-redondas com seus pares</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:var(--cream);border-radius:20px 20px 0 0;padding:1.5rem 1.25rem 1rem;flex:1;">
+    <div style="font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--mn-blue);margin-bottom:1rem;text-align:center;">
+      <span class="en">Your Guide</span><span class="pt">Seu Guia</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+      <button onclick="showPage('checklist',null)" style="background:#fff;border:1.5px solid var(--border);border-radius:var(--r);padding:1rem;text-align:left;cursor:pointer;box-shadow:var(--sh);font-family:'Inter',sans-serif;">
+        <div style="font-size:22px;margin-bottom:5px;">✅</div>
+        <div style="font-size:12px;font-weight:700;color:var(--sf-blue);margin-bottom:2px;"><span class="en">Checklist</span><span class="pt">Checklist</span></div>
+        <div style="font-size:10px;color:var(--muted);line-height:1.4;"><span class="en">Before you go</span><span class="pt">Antes de partir</span></div>
+      </button>
+      <button onclick="showPage('pro',null)" style="background:#fff;border:1.5px solid var(--border);border-radius:var(--r);padding:1rem;text-align:left;cursor:pointer;box-shadow:var(--sh);font-family:'Inter',sans-serif;">
+        <div style="font-size:22px;margin-bottom:5px;">🗺️</div>
+        <div style="font-size:12px;font-weight:700;color:var(--sf-blue);margin-bottom:2px;">DF Maps</div>
+        <div style="font-size:10px;color:var(--muted);line-height:1.4;"><span class="en">Campus map &amp; tips</span><span class="pt">Mapa e dicas</span></div>
+      </button>
+      <button onclick="showPage('sf',null)" style="background:#fff;border:1.5px solid var(--border);border-radius:var(--r);padding:1rem;text-align:left;cursor:pointer;box-shadow:var(--sh);font-family:'Inter',sans-serif;">
+        <div style="font-size:22px;margin-bottom:5px;">🌉</div>
+        <div style="font-size:12px;font-weight:700;color:var(--sf-blue);margin-bottom:2px;">São Francisco</div>
+        <div style="font-size:10px;color:var(--muted);line-height:1.4;"><span class="en">Restaurants &amp; transport</span><span class="pt">Restaurantes e transporte</span></div>
+      </button>
+      <button onclick="showPage('tips',null)" style="background:#fff;border:1.5px solid var(--border);border-radius:var(--r);padding:1rem;text-align:left;cursor:pointer;box-shadow:var(--sh);font-family:'Inter',sans-serif;">
+        <div style="font-size:22px;margin-bottom:5px;">💬</div>
+        <div style="font-size:12px;font-weight:700;color:var(--sf-blue);margin-bottom:2px;"><span class="en">General Tips</span><span class="pt">Dicas Gerais</span></div>
+        <div style="font-size:10px;color:var(--muted);line-height:1.4;"><span class="en">Tips, BR companies &amp; contacts</span><span class="pt">Dicas, empresas BR e contatos</span></div>
+      </button>
+    </div>
+    <button onclick="showPage('sessions',null)" style="width:100%;background:linear-gradient(135deg,var(--mn-blue),var(--purple));border:none;border-radius:var(--r);padding:0.9rem 1.25rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,102,204,0.3);display:flex;align-items:center;gap:12px;font-family:'Inter',sans-serif;margin-bottom:1.25rem;">
+      <span style="font-size:24px;">📅</span>
+      <div style="text-align:left;">
+        <div style="font-size:13px;font-weight:800;color:#fff;margin-bottom:2px;"><span class="en">Sessions for Manufatura</span><span class="pt">Sessões Recomendadas</span></div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.65);"><span class="en">3-day curated agenda · Tue–Thu · Sep 15–17</span><span class="pt">Agenda de 3 dias · Ter–Qui · 15–17 Set</span></div>
+      </div>
+      <span style="margin-left:auto;color:rgba(255,255,255,0.6);font-size:16px;">→</span>
+    </button>
+
+    <div style="font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--mn-blue);margin-bottom:0.75rem;text-align:center;">
+      💬 <span class="en">Your Salesforce Contacts</span><span class="pt">Seus Contatos Salesforce</span>
+    </div>
+    <div style="background:#fff;border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;">
+      <div class="contact-item">
+        <div class="contact-avatar">MM</div>
+        <div class="contact-info"><strong>Mariana Meira</strong><span>Principal Solution Engineer</span></div>
+        <a class="wa-btn" href="https://wa.me/5511995888935" target="_blank"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> WhatsApp</a>
+      </div>
+      <div class="contact-item">
+        <div class="contact-avatar">IM</div>
+        <div class="contact-info"><strong>Isabella Martucci</strong><span>Manufacturing AE</span></div>
+        <a class="wa-btn" href="https://wa.me/11972857335" target="_blank"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<!-- ═══ CHECKLIST ═══ -->
+<div class="page" id="page-checklist">
+  <button class="back-btn" onclick="showPage('home',null)">← <span class="en">Back to Home</span><span class="pt">Voltar ao Início</span></button>
+<div class="section">
+  <div class="sh"><div class="slabel">Antes de Partir · Before You Leave</div>
+    <h2 class="stitle en">Pre-Travel Checklist</h2><h2 class="stitle pt">Checklist de Viagem</h2></div>
+  <div class="cg">
+    <div class="cg-title">🛂 <span class="en">Documents &amp; Visa</span><span class="pt">Documentos e Visto</span></div>
+    <div class="cc">
+      <label class="ci"><input type="checkbox" onchange="toggleDone(this)"/>
+        <div class="ct"><div class="en">Valid US Visa (B1/B2 or applicable)</div><div class="pt">Visto americano válido (B1/B2 ou aplicável)</div></div></label>
+      <label class="ci"><input type="checkbox" onchange="toggleDone(this)"/>
+        <div class="ct"><div class="en">Passport valid 6+ months beyond travel dates</div><div class="pt">Passaporte válido por 6+ meses além das datas da viagem</div></div></label>
+      <label class="ci"><input type="checkbox" onchange="toggleDone(this)"/>
+        <div class="ct"><div class="en">Dreamforce registration confirmation email</div><div class="pt">E-mail de confirmação do registro no Dreamforce</div></div></label>
+      <label class="ci"><input type="checkbox" onchange="toggleDone(this)"/>
+        <div class="ct"><div class="en">Download <strong>Salesforce Events</strong> app (iOS &amp; Android) · <a href="https://www.salesforce.com/dreamforce/" target="_blank">salesforce.com/dreamforce</a></div><div class="pt">Baixar o app <strong>Salesforce Events</strong> (iOS e Android)</div></div></label>
+    </div>
+  </div>
+  <div class="cg">
+    <div class="cg-title">💼 <span class="en">Work &amp; Tech</span><span class="pt">Trabalho e Tecnologia</span></div>
+    <div class="cc">
+      <label class="ci"><input type="checkbox" onchange="toggleDone(this)"/>
+        <div class="ct"><div class="en">Prepare 2–3 key Manufacturing use cases to discuss (field service, supply chain, dealer mgmt)</div><div class="pt">Prepare 2–3 casos de uso de Manufatura para discutir (field service, supply chain, gestão de revendas)</div></div></label>
+      <label class="ci"><input type="checkbox" onchange="toggleDone(this)"/>
+        <div class="ct"><div class="en">Business cards / LinkedIn QR ready</div><div class="pt">Cartões de visita / QR do LinkedIn prontos</div></div></label>
+      <label class="ci"><input type="checkbox" onchange="toggleDone(this)"/>
+        <div class="ct"><div class="en">Portable charger / power bank (phone = badge + schedule)</div><div class="pt">Carregador portátil / power bank (celular = crachá + agenda)</div></div></label>
+      <label class="ci"><input type="checkbox" onchange="toggleDone(this)"/>
+        <div class="ct"><div class="en">Add sessions to your agenda in the <strong>Salesforce Events</strong> app — capacity fills fast</div><div class="pt">Adicione sessões à sua agenda no app <strong>Salesforce Events</strong> — as vagas enchem rápido</div></div></label>
+      <label class="ci"><input type="checkbox" onchange="toggleDone(this)"/>
+        <div class="ct"><div class="en">International data plan or e-SIM activated</div><div class="pt">Plano de dados internacional ou e-SIM ativado</div></div></label>
+    </div>
+  </div>
+  <div class="cg">
+    <div class="cg-title">👔 <span class="en">Logistics &amp; Comfort</span><span class="pt">Logística e Conforto</span></div>
+    <div class="cc">
+      <label class="ci"><input type="checkbox" onchange="toggleDone(this)"/>
+        <div class="ct"><div class="en">Comfortable walking shoes (10,000+ steps/day at DF)</div><div class="pt">Sapatos confortáveis (10.000+ passos/dia no DF)</div></div></label>
+      <label class="ci"><input type="checkbox" onchange="toggleDone(this)"/>
+        <div class="ct"><div class="en">Light jacket — San Francisco evenings are cold even in September</div><div class="pt">Jaqueta leve — noites de São Francisco são frias mesmo em setembro</div></div></label>
+      <label class="ci"><input type="checkbox" onchange="toggleDone(this)"/>
+        <div class="ct"><div class="en">Hotel confirmed near Moscone (SoMa / Union Square area)</div><div class="pt">Hotel confirmado próximo ao Moscone (SoMa / Union Square)</div></div></label>
+      <label class="ci"><input type="checkbox" onchange="toggleDone(this)"/>
+        <div class="ct"><div class="en">Notify your bank of international travel</div><div class="pt">Avisar o banco sobre viagem internacional</div></div></label>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<!-- ═══ DF MAPS ═══ -->
+<div class="page" id="page-pro">
+  <button class="back-btn" onclick="showPage('home',null)">← <span class="en">Back to Home</span><span class="pt">Voltar ao Início</span></button>
+<div class="section">
+  <div class="sh"><div class="slabel">Orientação no Evento · Event Navigation</div>
+    <h2 class="stitle en">DF Maps &amp; Campus</h2><h2 class="stitle pt">Mapas e Campus</h2></div>
+
+  <div class="map-wrap">
+    <a class="map-open-btn" href="https://www.salesforce.com/dreamforce/attend/" target="_blank">🗺️ <span class="en">Open Official Dreamforce Map</span><span class="pt">Abrir Mapa Oficial do Dreamforce</span></a>
+    <div class="map-legend">
+      <div class="map-legend-title en">Key Locations for Manufacturing</div>
+      <div class="map-legend-title pt">Locais Chave para Manufatura</div>
+      <div class="map-grid">
+        <div class="mv"><div class="mn-dot">1</div><div class="mi"><strong>Moscone South</strong><span class="en">Main Keynotes · LL Pavilion</span><span class="pt">Keynotes Principais · Pavilhão LL</span></div></div>
+        <div class="mv"><div class="mn-dot">2</div><div class="mi"><strong>Moscone West</strong><span class="en">Industry Sessions · L2–L3</span><span class="pt">Sessões de Indústria · L2–L3</span></div></div>
+        <div class="mv"><div class="mn-dot">3</div><div class="mi"><strong>Moscone North</strong><span class="en">Certification &amp; Learning</span><span class="pt">Certificação e Aprendizado</span></div></div>
+        <div class="mv"><div class="mn-dot">4</div><div class="mi"><strong>InterContinental</strong><span class="en">Roundtables &amp; CXO</span><span class="pt">Mesas-Redondas e CXO</span></div></div>
+        <div class="mv"><div class="mn-dot">5</div><div class="mi"><strong>Metreon AMC</strong><span class="en">Brazilian Sessions</span><span class="pt">Sessões Brasileiras</span></div></div>
+        <div class="mv"><div class="mn-dot">6</div><div class="mi"><strong>Agentforce Zone</strong><span class="en">Live Demos · Moscone S. LL</span><span class="pt">Demos ao Vivo · Moscone S. LL</span></div></div>
+        <div class="mv"><div class="mn-dot">7</div><div class="mi"><strong>Executive Suite</strong><span class="en">Moscone South LL</span><span class="pt">Moscone South LL</span></div></div>
+        <div class="mv"><div class="mn-dot">8</div><div class="mi"><strong>St. Regis Hotel</strong><span class="en">CXO Program</span><span class="pt">Programa CXO</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tc">
+    <div class="tch"><span class="ico">⚙️</span><span class="lbl en">Manufacturing at Dreamforce</span><span class="lbl pt">Manufatura no Dreamforce</span></div>
+    <div class="ti"><strong class="en">Industry Hub — Moscone West L2</strong><strong class="pt">Hub de Indústria — Moscone West L2</strong>
+      <div class="d en">Manufacturing and Industrial sessions are concentrated in Moscone West, levels 2–3. Look for the Manufacturing track in the Salesforce Events app.</div>
+      <div class="d pt">Sessões de Manufatura e Indústria estão concentradas no Moscone West, andares 2–3. Procure o track de Manufacturing no app.</div></div>
+    <div class="ti"><strong class="en">Field Service Demo Zone</strong><strong class="pt">Zona de Demo — Field Service</strong>
+      <div class="d en">Dedicated Field Service Lightning demos on the Moscone South expo floor. Bring your field operations challenges to test live.</div>
+      <div class="d pt">Demos dedicadas de Field Service Lightning no piso de exposição do Moscone South. Leve seus desafios de operações de campo para testar ao vivo.</div></div>
+    <div class="ti"><strong class="en">Agentforce for Manufacturing</strong><strong class="pt">Agentforce para Manufatura</strong>
+      <div class="d en">Test AI agents for dealer management, field service dispatch, and supply chain visibility at the Agentforce Zone (#6).</div>
+      <div class="d pt">Teste agentes de IA para gestão de revendas, despacho de field service e visibilidade de supply chain na Agentforce Zone (#6).</div></div>
+  </div>
+</div>
+</div>
+
+
+<!-- ═══ SAN FRANCISCO ═══ -->
+<div class="page" id="page-sf">
+  <button class="back-btn" onclick="showPage('home',null)">← <span class="en">Back to Home</span><span class="pt">Voltar ao Início</span></button>
+<div class="section">
+  <div class="sh"><div class="slabel">Conhecendo a Cidade · Know the City</div>
+    <h2 class="stitle en">San Francisco Tips</h2><h2 class="stitle pt">Dicas de São Francisco</h2></div>
+  <div class="tc">
+    <div class="tch"><span class="ico">🚌</span><span class="lbl en">Getting Around</span><span class="lbl pt">Como se Locomover</span></div>
+    <div class="ti"><strong>Uber / Lyft</strong>
+      <div class="d en">Most reliable option. Expect surge pricing at peak Dreamforce hours — book in advance.</div>
+      <div class="d pt">Opção mais confiável. Espere preços altos nos horários de pico — reserve com antecedência.</div></div>
+    <div class="ti"><strong>BART / Muni Metro</strong>
+      <div class="d en">Powell St. station is closest to Moscone. Quick &amp; cheap. Get a Clipper card on arrival.</div>
+      <div class="d pt">A estação Powell St. é a mais próxima do Moscone. Rápido e barato. Pegue um Clipper card.</div></div>
+    <div class="ti"><strong class="en">Airport (SFO → City)</strong><strong class="pt">Aeroporto (SFO → Cidade)</strong>
+      <div class="d en">BART: ~35 min, $11. Uber: ~30–50 min, $35–60.</div>
+      <div class="d pt">BART: ~35 min, $11. Uber: ~30–50 min, $35–60.</div></div>
+  </div>
+  <div class="tc">
+    <div class="tch"><span class="ico">💡</span><span class="lbl en">Local Know-How</span><span class="lbl pt">Dicas Locais</span></div>
+    <div class="ti"><strong class="en">Tipping</strong><strong class="pt">Gorjetas</strong>
+      <div class="d en">15–20% at restaurants. $2–5 for rides. Expected everywhere.</div>
+      <div class="d pt">15–20% em restaurantes. $2–5 em corridas. Esperado em todo lugar.</div></div>
+    <div class="ti"><strong class="en">Safety</strong><strong class="pt">Segurança</strong>
+      <div class="d en">Stick to SoMa, Union Square, and the waterfront. Avoid Tenderloin at night.</div>
+      <div class="d pt">Fique no SoMa, Union Square e orla. Evite o Tenderloin à noite.</div></div>
+    <div class="ti"><strong class="en">Time Zone</strong><strong class="pt">Fuso Horário</strong>
+      <div class="d en">PDT (UTC-7) — 4 hours behind Brasília (BRT = UTC-3).</div>
+      <div class="d pt">PDT (UTC-7) — 4 horas atrás de Brasília (BRT = UTC-3).</div></div>
+    <div class="ti"><strong class="en">Emergency</strong><strong class="pt">Emergência</strong>
+      <div class="d en">US emergency: 911. Brazilian Consulate SF: +1 (415) 981-8170.</div>
+      <div class="d pt">Emergência EUA: 911. Consulado Brasileiro em SF: +1 (415) 981-8170.</div></div>
+  </div>
+  <div class="tc">
+    <div class="tch"><span class="ico">🍽️</span><span class="lbl en">Restaurants Near Moscone</span><span class="lbl pt">Restaurantes Próximos</span></div>
+    <div class="ti"><strong>Delarosa Downtown</strong>
+      <div class="d en">Neapolitan pizza, great cocktails. Casual &amp; lively — perfect for team dinners.</div>
+      <div class="d pt">Pizza napolitana e ótimos drinques — perfeito para jantar em grupo.</div>
+      <div class="dist">🚶 8 min walk</div></div>
+    <div class="ti"><strong>620 Jones</strong>
+      <div class="d en">Upscale bar &amp; restaurant. Great for client entertainment. <a href="https://620-jones.com/" target="_blank">620-jones.com</a></div>
+      <div class="d pt">Bar e restaurante sofisticado. Ótimo para entretenimento executivo.</div>
+      <div class="dist">🚶 12 min walk</div></div>
+    <div class="ti"><strong>La Mar Cebichería</strong>
+      <div class="d en">Peruvian ceviche &amp; seafood on the Embarcadero waterfront. Stunning bay views.</div>
+      <div class="d pt">Ceviche peruano e frutos do mar com vista para a Baía de São Francisco.</div>
+      <div class="dist">🚗 10 min Uber · 🚶 25 min walk</div></div>
+    <div class="ti"><strong>John's Grill</strong>
+      <div class="d en">SF institution since 1908 — classic American steakhouse. <a href="https://www.johnsgrill.com/location/johns-grill/" target="_blank">johnsgrill.com</a></div>
+      <div class="d pt">Clássico de São Francisco desde 1908 — churrascaria americana com ambiente marcante.</div>
+      <div class="dist">🚶 10 min walk</div></div>
+    <div class="ti"><strong>Perbacco</strong>
+      <div class="d en">Northern Italian fine dining — excellent wine list, ideal for executive dinners. <a href="https://www.perbaccosf.com/" target="_blank">perbaccosf.com</a></div>
+      <div class="d pt">Alta gastronomia italiana — ótima carta de vinhos, ideal para jantares executivos.</div>
+      <div class="dist">🚶 12 min walk</div></div>
+    <div class="ti"><strong>Sightglass Coffee</strong>
+      <div class="d en">Best third-wave coffee in SoMa. Perfect for early morning meetings before sessions.</div>
+      <div class="d pt">Melhor café do SoMa. Perfeito para reuniões antes das sessões.</div>
+      <div class="dist">🚶 5 min walk</div></div>
+  </div>
+</div>
+</div>
+
+
+<!-- ═══ GENERAL TIPS ═══ -->
+<div class="page" id="page-tips">
+  <button class="back-btn" onclick="showPage('home',null)">← <span class="en">Back to Home</span><span class="pt">Voltar ao Início</span></button>
+<div class="section">
+  <div class="sh"><div class="slabel">Dicas Gerais · General Tips</div>
+    <h2 class="stitle en">General Tips</h2><h2 class="stitle pt">Dicas Gerais</h2></div>
+  <div class="etip"><span class="eico">⏰</span><div>
+    <h4 class="en">Arrive Early for Keynotes</h4><h4 class="pt">Chegue Cedo para os Keynotes</h4>
+    <div class="en">Arrive at Moscone West 45–60 min before start. Lines form early and seating is first-come, first-served.</div>
+    <div class="pt">Chegue ao Moscone West 45–60 min antes. As filas se formam cedo e os assentos são por ordem de chegada.</div>
+  </div></div>
+  <div class="etip"><span class="eico">📱</span><div>
+    <h4 class="en">Master the Salesforce Events App</h4><h4 class="pt">Domine o App Salesforce Events</h4>
+    <div class="en">Your command center for agenda, room changes, and networking. Add sessions in advance — they fill up. Available on iOS &amp; Android.</div>
+    <div class="pt">Sua central de comando para agenda, mudanças de sala e networking. Adicione sessões com antecedência — elas lotam.</div>
+  </div></div>
+  <div class="etip"><span class="eico">🚶</span><div>
+    <h4 class="en">Allow 15–20 Min Between Sessions</h4><h4 class="pt">Reserve 15–20 Min Entre Sessões</h4>
+    <div class="en">Walking from Moscone West to North takes 10–15 min at peak. InterContinental roundtables add 5+ min. Always buffer.</div>
+    <div class="pt">Caminhar do Moscone Oeste ao Norte leva 10–15 min no pico. Mesas-redondas no InterContinental adicionam 5+ min.</div>
+  </div></div>
+  <div class="etip"><span class="eico">🤝</span><div>
+    <h4 class="en">Executive Meetings: Arrive 10 Min Early</h4><h4 class="pt">Reuniões Executivas: 10 Min de Antecedência</h4>
+    <div class="en">Executive Meeting Suite at Moscone South (#7 on map). CXO Program at St. Regis (#8). Bring 2–3 strategic questions about Agentforce for Manufacturing, Field Service, or your roadmap.</div>
+    <div class="pt">Executive Meeting Suite no Moscone South (#7 no mapa). Programa CXO no St. Regis (#8). Traga 2–3 perguntas estratégicas sobre Agentforce para Manufatura, Field Service ou seu roadmap.</div>
+  </div></div>
+  <div class="etip"><span class="eico">🍽️</span><div>
+    <h4 class="en">Beat the Lunch Lines</h4><h4 class="pt">Fuja das Filas do Almoço</h4>
+    <div class="en">Moscone lunch lines are very long. Eat early (11:30am) or step outside to SoMa restaurants. See the São Francisco tab for recommendations.</div>
+    <div class="pt">As filas do almoço no Moscone são longas. Almoce cedo (11h30) ou saia para restaurantes no SoMa.</div>
+  </div></div>
+  <div class="etip"><span class="eico">🔋</span><div>
+    <h4 class="en">Stay Charged All Day</h4><h4 class="pt">Mantenha o Celular Carregado</h4>
+    <div class="en">Charging stations throughout all buildings — bring your cable. Your phone is your badge, schedule, and map. A power bank is essential.</div>
+    <div class="pt">Estações de carregamento em todos os prédios — traga seu cabo. Seu celular é seu crachá, agenda e mapa. Um power bank é essencial.</div>
+  </div></div>
+  <div class="etip"><span class="eico">🤖</span><div>
+    <h4 class="en">Agentforce Is the Theme of 2026</h4><h4 class="pt">Agentforce é o Tema de 2026</h4>
+    <div class="en">Dreamforce 2026 centers on Agentforce — autonomous AI agents. Visit the demo zone (#6 on map) and bring your Manufacturing use cases (dealer management, field service, supply chain, after-sales) to test live with Salesforce engineers.</div>
+    <div class="pt">O Dreamforce 2026 é centrado no Agentforce. Visite a zona de demos (#6 no mapa) e leve casos de uso de Manufatura (gestão de revendas, field service, supply chain, pós-venda) para testar ao vivo.</div>
+  </div></div>
+
+  <!-- Brazilian Companies -->
+  <div class="br-section">
+    <div class="br-title">🇧🇷 <span class="en">Brazilian Companies at Dreamforce</span><span class="pt">Empresas Brasileiras no Dreamforce</span></div>
+    <div class="br-list">
+      <div class="br-item" style="flex-direction:column;align-items:flex-start;gap:6px;">
+        <div style="display:flex;align-items:center;gap:10px;width:100%;">
+          <span class="br-co">iFood</span>
+          <span style="font-size:13px;font-weight:600;flex:1;">Build an AI Agent in 36 Hours, Prove the ROI in Days</span>
+        </div>
+        <div style="font-size:11px;color:var(--muted);padding-left:2px;">📅 Wed Sep 16 · 11:00–11:20 AM PDT (3:00–3:20 PM GMT-3)<br>📍 Moscone West, L2, Learning Lab Theater B · 🪑 First Come, First Seated</div>
+      </div>
+      <div class="br-item" style="flex-direction:column;align-items:flex-start;gap:6px;">
+        <div style="display:flex;align-items:center;gap:10px;width:100%;">
+          <span class="br-co">Itaú &amp; Arcos Dourados</span>
+          <a class="br-link" href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1780077715147001xHMz" target="_blank" style="font-size:11px;">Beyond the Hype →</a>
+        </div>
+        <div style="font-size:11px;color:var(--muted);padding-left:2px;">📅 Tue Sep 15 · 12:30–1:10 PM PDT (4:30–5:10 PM GMT-3)<br>📍 Metreon AMC, L3, Theatre 15</div>
+      </div>
+      <div class="br-item" style="flex-direction:column;align-items:flex-start;gap:6px;">
+        <div style="display:flex;align-items:center;gap:10px;width:100%;">
+          <span class="br-co">Bradesco</span>
+          <a class="br-link" href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1779455182215001blTl" target="_blank" style="font-size:11px;">AI Insights →</a>
+        </div>
+        <div style="font-size:11px;color:var(--muted);padding-left:2px;">📅 Wed Sep 16 · 9:00–9:20 AM PDT (1:00–1:20 PM GMT-3)<br>📍 Moscone South, LL, Content Pavilion, Stage 4</div>
+      </div>
+      <div class="br-item" style="flex-direction:column;align-items:flex-start;gap:6px;">
+        <div style="display:flex;align-items:center;gap:10px;width:100%;">
+          <span class="br-co">Globo</span>
+          <a class="br-link" href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1779838697602001GCtG" target="_blank" style="font-size:11px;">CRM &amp; AI →</a>
+        </div>
+        <div style="font-size:11px;color:var(--muted);padding-left:2px;">📅 Thu Sep 17 · 2:30–2:50 PM PDT (6:30–6:50 PM GMT-3)<br>📍 Moscone West, L3, Theater 17</div>
+      </div>
+      <div class="br-item" style="flex-direction:column;align-items:flex-start;gap:6px;">
+        <div style="display:flex;align-items:center;gap:10px;width:100%;">
+          <span class="br-co">Ford Brazil</span>
+          <a class="br-link" href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1780064861494001F7LF" target="_blank" style="font-size:11px;">Headless Ops →</a>
+        </div>
+        <div style="font-size:11px;color:var(--muted);padding-left:2px;">📅 Wed Sep 16 · 3:00–3:20 PM PDT (7:00–7:20 PM GMT-3)<br>📍 Moscone West, L2, Learning Lab Theater A</div>
+      </div>
+    </div>
+    <p style="font-size:11px;color:var(--muted);margin-top:8px;padding:0 4px;" class="en">Click the session title to register in the Dreamforce catalog.</p>
+    <p style="font-size:11px;color:var(--muted);margin-top:8px;padding:0 4px;" class="pt">Clique no título da sessão para registrar no catálogo do Dreamforce.</p>
+  </div>
+
+  <!-- Contacts -->
+  <div style="font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--mn-blue);margin-bottom:0.75rem;">
+    💬 <span class="en">Your Salesforce Contacts</span><span class="pt">Seus Contatos Salesforce</span>
+  </div>
+  <div style="background:#fff;border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;">
+    <div class="contact-item">
+      <div class="contact-avatar">MM</div>
+      <div class="contact-info"><strong>Mariana Meira</strong><span>Principal Solution Engineer</span></div>
+      <a class="wa-btn" href="https://wa.me/5511995888935" target="_blank"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> WhatsApp</a>
+    </div>
+    <div class="contact-item">
+      <div class="contact-avatar">IM</div>
+      <div class="contact-info"><strong>Isabella Martucci</strong><span>Manufacturing AE</span></div>
+      <a class="wa-btn" href="https://wa.me/11972857335" target="_blank"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> WhatsApp</a>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<!-- ═══ SESSIONS ═══ -->
+<div class="page" id="page-sessions">
+  <button class="back-btn" onclick="showPage('home',null)">← <span class="en">Back to Home</span><span class="pt">Voltar ao Início</span></button>
+<div class="section">
+  <div class="sh"><div class="slabel">Agenda Recomendada · Recommended Agenda</div>
+    <h2 class="stitle en">Sessions for Manufatura</h2><h2 class="stitle pt">Sessões Recomendadas</h2></div>
+
+  <div class="industry-filter">
+    <button class="ifbtn active" data-filter="all" onclick="setFilter('all',this)">All</button>
+    <button class="ifbtn" data-filter="mfg" onclick="setFilter('mfg',this)">🏭 Manufacturing</button>
+    <button class="ifbtn" data-filter="eu" onclick="setFilter('eu',this)">⚡ E&amp;U</button>
+    <button class="ifbtn" data-filter="auto" onclick="setFilter('auto',this)">🚗 Automotive</button>
+    <button class="ifbtn" data-filter="br" onclick="setFilter('br',this)">🇧🇷 Brazilian</button>
+    <button class="ifbtn" data-filter="mkt" onclick="setFilter('mkt',this)">📣 Marketing</button>
+  </div>
+
+  <div class="tl-legend">
+    <div class="lli"><div class="ldot" style="background:#E8640A"></div><span>Keynote</span></div>
+    <div class="lli"><div class="ldot" style="background:#0066CC"></div><span>Manufacturing</span></div>
+    <div class="lli"><div class="ldot" style="background:#00875A"></div><span>E&amp;U</span></div>
+    <div class="lli"><div class="ldot" style="background:#7B4FBB"></div><span>Automotive</span></div>
+    <div class="lli"><div class="ldot" style="background:#009C3B"></div><span>🇧🇷 Brazilian</span></div>
+    <div class="lli"><div class="ldot" style="background:#C44BC4"></div><span>Marketing</span></div>
+    <div class="lli"><div class="ldot" style="background:var(--muted)"></div><span>Buffer</span></div>
+  </div>
+
+  <div class="day-tabs">
+    <button class="dt active" onclick="showDay('day1',this)">Tue Sep 15</button>
+    <button class="dt" onclick="showDay('day2',this)">Wed Sep 16</button>
+    <button class="dt" onclick="showDay('day3',this)">Thu Sep 17</button>
+  </div>
+
+  <!-- ── TUESDAY SEP 15 ── -->
+  <div class="tl-day" id="tl-day1"><div class="tl">
+
+    <div class="tli" data-cat="all">
+      <div class="tldo" style="background:#E8640A;box-shadow:0 0 0 3px #E8640A;"></div>
+      <div class="tlc">
+        <div class="tlt" style="color:#E8640A;">10:00 AM <span class="tlb" style="background:#E8640A;color:#fff;">⭐ KEYNOTE</span></div>
+        <h4 class="en">Dreamforce Main Keynote</h4><h4 class="pt">Keynote Principal do Dreamforce</h4>
+        <div class="en">The flagship keynote. CEO announcements, Agentforce vision, product launches. Arrive 45–60 min early.</div>
+        <div class="pt">Keynote principal. Anúncios do CEO, visão Agentforce, lançamentos. Chegue 45–60 min antes.</div>
+        <div class="tlm"><span>📍 Moscone South, Hall B</span><span>⏱ 10:00 AM PDT · 2:00 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~10 min — walk to Metreon AMC, L3 or Moscone West, L2–L3 (parallel sessions)</h4></div>
+    </div>
+
+    <div class="tli" data-cat="mfg auto eu br">
+      <div class="tldo" style="background:#0066CC;box-shadow:0 0 0 2px #0066CC;"></div>
+      <div class="tlc" style="border-left:4px solid #0066CC;background:linear-gradient(to right,#f0f6ff,#fff);">
+        <div class="tlt" style="color:#0066CC;">12:30 PM <span class="tlb" style="background:#0066CC;color:#fff;">🏭 MFG</span> <span style="background:rgba(244,100,10,0.85);color:#fff;font-size:8px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:2px 6px;border-radius:3px;">⭐ Reserved</span> <span style="font-size:9px;color:var(--muted);">4:30 PM GMT-3</span></div>
+        <h4 class="en"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1779839108204001GYEL" target="_blank">Build an Agentic B2B Marketing and Sales Playbook</a></h4>
+        <h4 class="pt">Construindo um Playbook Ágil de Marketing e Vendas B2B</h4>
+        <div class="en">Learn how to build an autonomous B2B marketing and sales playbook powered by Agentforce — applicable to manufacturing dealer and distributor networks.</div>
+        <div class="pt">Como construir um playbook autônomo de marketing e vendas B2B com Agentforce — aplicável às redes de revendas e distribuidores.</div>
+        <div class="tlm"><span>📍 Moscone West, L2, Room 2006</span><span>⏱ 12:30–1:30 PM PDT · 4:30 PM GMT-3</span><span class="reserved">⭐ Reserved Seating</span></div>
+      </div>
+    </div>
+
+    <div class="tli" data-cat="mfg">
+      <div class="tldo" style="background:#0066CC;box-shadow:0 0 0 2px #0066CC;"></div>
+      <div class="tlc" style="border-left:4px solid #0066CC;background:linear-gradient(to right,#f0f6ff,#fff);">
+        <div class="tlt" style="color:#0066CC;">12:30 PM <span class="tlb" style="background:#0066CC;color:#fff;">🏭 WORKSHOP</span> <span style="font-size:9px;color:var(--muted);">4:30 PM GMT-3</span></div>
+        <h4 class="en"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1779839086676001GaZy" target="_blank">Agentforce Vibes: Debug & Build in Agentforce Manufacturing</a></h4>
+        <h4 class="pt">Agentforce Vibes: Debug e Build no Agentforce para Manufatura</h4>
+        <div class="en">Workshop — a dealer's sales agreement is stuck: use Agentforce Vibes to debug live, undo the damage, and ship a working Lightning Web Component, all from a natural language prompt. <strong>Bring your own laptop.</strong></div>
+        <div class="pt">Workshop — um contrato de venda de revenda está travado: use o Agentforce Vibes para depurar ao vivo, corrigir e entregar um Lightning Web Component funcional, tudo via prompt em linguagem natural. <strong>Traga seu próprio laptop.</strong></div>
+        <div class="tlm"><span>📍 Moscone West, L2, Room 2000</span><span>⏱ 12:30–1:30 PM PDT · 4:30 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli" data-cat="mfg auto eu br">
+      <div class="tldo" style="background:#7B4FBB;box-shadow:0 0 0 2px #7B4FBB;"></div>
+      <div class="tlc" style="border-left:4px solid #7B4FBB;background:linear-gradient(to right,#f8f5ff,#fff);">
+        <div class="tlt" style="color:#7B4FBB;">12:30 PM <span class="tlb" style="background:#7B4FBB;color:#fff;">🚗 AUTO</span> <span class="tlb" style="background:#0066CC;color:#fff;">🏭 MFG</span> <span style="font-size:9px;color:var(--muted);">4:30 PM GMT-3</span></div>
+        <h4 class="en"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1778616547210001UNAL" target="_blank">Grow with B2B Commerce and Agentforce Revenue Management</a></h4>
+        <h4 class="pt">Crescendo com B2B Commerce e Gestão de Receita com Agentforce</h4>
+        <div class="en">Scale digital sales channels and simplify complex pricing workflows with B2B Commerce and Agentforce — key for manufacturing distribution and dealer portals.</div>
+        <div class="pt">Escalar canais de vendas digitais e simplificar precificação complexa — essencial para portais de distribuidores e revendas.</div>
+        <div class="tlm"><span>📍 Moscone West, L3, Room 3018</span><span>⏱ 12:30–1:10 PM PDT · 4:30 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~10 min — walk to Metreon AMC, L3</h4></div>
+    </div>
+
+    <div class="tli" data-cat="br">
+      <div class="tldo" style="background:#009C3B;box-shadow:0 0 0 2px #009C3B;"></div>
+      <div class="tlc" style="border-left:4px solid #009C3B;background:linear-gradient(to right,#f0fff4,#fff);">
+        <div class="tlt" style="color:#009C3B;">12:30 PM <span class="tlb" style="background:#009C3B;color:#FFDF00;">🇧🇷 BRAZILIAN SESSION</span> <span style="font-size:9px;color:var(--muted);">4:30 PM GMT-3</span></div>
+        <h4 class="en"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1780077715147001xHMz" target="_blank">Beyond the Hype: Autonomous Service in Retail and Finance</a></h4>
+        <h4 class="pt">Além do Hype: Serviço Autônomo em Varejo e Finanças</h4>
+        <div class="en">Itaú and Arcos Dourados on moving from AI experimentation to real autonomous service — lessons for manufacturing and energy after-sales.</div>
+        <div class="pt">Itaú e Arcos Dourados: da experimentação com IA ao serviço autônomo real — lições para pós-venda em Manufatura e Energia.</div>
+        <div class="tlm"><span>📍 Metreon AMC, L3, Theatre 15</span><span>⏱ 12:30–1:10 PM PDT · 4:30 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~12 min — walk to Moscone West, L3</h4></div>
+    </div>
+
+    <div class="tli" data-cat="auto">
+      <div class="tldo" style="background:#7B4FBB;box-shadow:0 0 0 2px #7B4FBB;"></div>
+      <div class="tlc" style="border-left:4px solid #7B4FBB;background:linear-gradient(to right,#f8f5ff,#fff);">
+        <div class="tlt" style="color:#7B4FBB;">1:30 PM <span class="tlb" style="background:#7B4FBB;color:#fff;">🚗 AUTOMOTIVE</span> <span style="font-size:9px;color:var(--muted);">5:30 PM GMT-3</span></div>
+        <h4 class="en"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1779839074068001GGCI" target="_blank">Reimagining the Automotive Captive Customer Journey</a></h4>
+        <h4 class="pt">Reinventando a Jornada do Cliente no Financiamento Automotivo</h4>
+        <div class="en">How automotive captive finance companies are reimagining the full customer journey with Salesforce.</div>
+        <div class="pt">Como empresas de financiamento automotivo reinventam a jornada completa do cliente com Salesforce.</div>
+        <div class="tlm"><span>📍 Moscone West, L3, Room 3022</span><span>⏱ 1:30–2:10 PM PDT · 5:30 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~5 min — same floor, walk to Theater 18</h4></div>
+    </div>
+
+    <div class="tli" data-cat="eu">
+      <div class="tldo" style="background:#00875A;box-shadow:0 0 0 2px #00875A;"></div>
+      <div class="tlc" style="border-left:4px solid #00875A;background:linear-gradient(to right,#f0fff8,#fff);">
+        <div class="tlt" style="color:#00875A;">2:00 PM <span class="tlb" style="background:#00875A;color:#fff;">⚡ E&amp;U</span> <span style="font-size:9px;color:var(--muted);">6:00 PM GMT-3</span></div>
+        <h4 class="en"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1779916917816001FIt6" target="_blank">Drive Commercial Excellence in Oil and Gas with Salesforce</a></h4>
+        <h4 class="pt">Excelência Comercial em Petróleo e Gás com Salesforce</h4>
+        <div class="en">How leading oil and gas companies drive commercial transformation — B2B customer management to field operations excellence.</div>
+        <div class="pt">Como líderes de O&G transformam operações comerciais — da gestão de clientes B2B à excelência de campo.</div>
+        <div class="tlm"><span>📍 Moscone West, L3, Theater 18</span><span>⏱ 2:00–2:20 PM PDT · 6:00 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~5 min — walk to Moscone West, L2</h4></div>
+    </div>
+
+    <div class="tli" data-cat="auto">
+      <div class="tldo" style="background:#7B4FBB;box-shadow:0 0 0 2px #7B4FBB;"></div>
+      <div class="tlc" style="border-left:4px solid #7B4FBB;background:linear-gradient(to right,#f8f5ff,#fff);">
+        <div class="tlt" style="color:#7B4FBB;">3:00 PM <span class="tlb" style="background:#7B4FBB;color:#fff;">🚗 AUTOMOTIVE</span> <span style="font-size:9px;color:var(--muted);">7:00 PM GMT-3</span></div>
+        <h4 class="en"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1779913730234001sGsf" target="_blank">Schedule Auto Repairs Conversationally with Agentforce</a></h4>
+        <h4 class="pt">Agende Reparos Automotivos de Forma Conversacional com Agentforce</h4>
+        <div class="en">See how Agentforce enables customers to book service appointments conversationally — no app, no hold music.</div>
+        <div class="pt">Como o Agentforce permite agendar serviços de forma conversacional — sem app, sem espera.</div>
+        <div class="tlm"><span>📍 Moscone West, L2, Learning Lab Theater A</span><span>⏱ 3:00–3:20 PM PDT · 7:00 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~5 min — walk to L3, Room 3018</h4></div>
+    </div>
+
+    <div class="tli" data-cat="auto mfg">
+      <div class="tldo" style="background:#0066CC;box-shadow:0 0 0 2px #0066CC;"></div>
+      <div class="tlc" style="border-left:4px solid #0066CC;background:linear-gradient(to right,#f0f6ff,#fff);">
+        <div class="tlt" style="color:#0066CC;">3:30 PM <span class="tlb" style="background:#0066CC;color:#fff;">🏭 MFG</span> <span class="tlb" style="background:#7B4FBB;color:#fff;">🚗 AUTO</span> <span style="font-size:9px;color:var(--muted);">7:30 PM GMT-3</span></div>
+        <h4 class="en"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1782865497054001JUI6" target="_blank">How to Let Dealers & Customers Self-Quote for Manufacturing</a></h4>
+        <h4 class="pt">Como Permitir que Revendas e Clientes Façam Cotações Self-Service</h4>
+        <div class="en">Enable dealers and end-customers to self-serve quotes — cutting sales cycles and freeing reps for complex deals.</div>
+        <div class="pt">Revendas e clientes finais fazem cotações self-service — reduzindo ciclos de venda e liberando os reps.</div>
+        <div class="tlm"><span>📍 Moscone West, L3, Room 3018</span><span>⏱ 3:30–3:50 PM PDT · 7:30 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~15 min — walk to InterCon, L3, Union Square (Roundtable 5)</h4></div>
+    </div>
+
+    <div class="tli" data-cat="mkt">
+      <div class="tldo" style="background:#C44BC4;box-shadow:0 0 0 2px #C44BC4;"></div>
+      <div class="tlc" style="border-left:4px solid #C44BC4;background:linear-gradient(to right,#fdf5ff,#fff);">
+        <div class="tlt" style="color:#C44BC4;">12:30 PM <span class="tlb" style="background:#C44BC4;color:#fff;">📣 MARKETING</span> <span style="background:rgba(0,0,0,0.12);color:#fff;font-size:8px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:2px 6px;border-radius:3px;">⭐ Reserved</span> <span style="font-size:9px;color:var(--muted);">4:30 PM GMT-3</span></div>
+        <h4 class="en">Optimize Your B2B Marketing With Conversational Analytics</h4>
+        <h4 class="pt">Otimize seu Marketing B2B com Análise Conversacional</h4>
+        <div class="en">Roundtable — best practices for using conversational analytics to sharpen your B2B marketing strategy and improve pipeline quality.</div>
+        <div class="pt">Mesa-redonda — boas práticas para usar análise conversacional e aprimorar sua estratégia de marketing B2B e qualidade de pipeline.</div>
+        <div class="tlm"><span>📍 InterCon, L3, Union Square, Roundtable 5</span><span>⏱ 12:30–1:30 PM PDT · 4:30 PM GMT-3</span><span class="reserved">⭐ Reserved Seating</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~12 min — walk to Metreon AMC, L3</h4></div>
+    </div>
+
+    <div class="tli" data-cat="mkt">
+      <div class="tldo" style="background:#C44BC4;box-shadow:0 0 0 2px #C44BC4;"></div>
+      <div class="tlc" style="border-left:4px solid #C44BC4;background:linear-gradient(to right,#fdf5ff,#fff);">
+        <div class="tlt" style="color:#C44BC4;">3:30 PM <span class="tlb" style="background:#C44BC4;color:#fff;">📣 MARKETING</span> <span style="font-size:9px;color:var(--muted);">7:30 PM GMT-3</span></div>
+        <h4 class="en">From Static Pages to Agentic Web Personalization</h4>
+        <h4 class="pt">De Páginas Estáticas à Personalização Web Agêntica</h4>
+        <div class="en">How AI agents are transforming static web pages into dynamic, personalized experiences — moving beyond rules-based personalization to truly autonomous decisioning.</div>
+        <div class="pt">Como agentes de IA transformam páginas web estáticas em experiências dinâmicas e personalizadas — além da personalização baseada em regras.</div>
+        <div class="tlm"><span>📍 Metreon AMC, L3, Theatre 13</span><span>⏱ 3:30–4:10 PM PDT · 7:30 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~15 min — walk to InterCon, L5, Ballroom A</h4></div>
+    </div>
+
+    <div class="tli" data-cat="mkt">
+      <div class="tldo" style="background:#C44BC4;box-shadow:0 0 0 2px #C44BC4;"></div>
+      <div class="tlc" style="border-left:4px solid #C44BC4;background:linear-gradient(to right,#fdf5ff,#fff);">
+        <div class="tlt" style="color:#C44BC4;">4:00 PM <span class="tlb" style="background:#C44BC4;color:#fff;">📣 MARKETING</span> <span style="background:rgba(0,0,0,0.12);color:#fff;font-size:8px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:2px 6px;border-radius:3px;">⭐ Reserved</span> <span style="font-size:9px;color:var(--muted);">8:00 PM GMT-3</span></div>
+        <h4 class="en">Conversational Messaging Use Cases from Around the Globe</h4>
+        <h4 class="pt">Casos de Uso de Mensageria Conversacional ao Redor do Mundo</h4>
+        <div class="en">Roundtable — global brands share how they're using conversational messaging (SMS, WhatsApp, RCS) to engage customers at scale and drive measurable outcomes.</div>
+        <div class="pt">Mesa-redonda — marcas globais compartilham como usam mensageria conversacional (SMS, WhatsApp, RCS) para engajar clientes em escala.</div>
+        <div class="tlm"><span>📍 InterCon, L5, InterCon Ballroom A, Roundtable 8</span><span>⏱ 4:00–5:00 PM PDT · 8:00 PM GMT-3</span><span class="reserved">⭐ Reserved Seating</span></div>
+      </div>
+    </div>
+
+    <div class="tli" data-cat="all">
+      <div class="tldo kn"></div>
+      <div class="tlc kn">
+        <div class="tlt">Evening <span class="tlb" style="background:#5A6A78;color:#fff;">🎉 NETWORKING</span></div>
+        <h4 class="en">Dreamforce Opening Celebration</h4><h4 class="pt">Festa de Abertura do Dreamforce</h4>
+        <div class="en">Official opening party — key networking moment. Confirm partner event invitations.</div>
+        <div class="pt">Festa de abertura oficial — confirme convites de parceiros.</div>
+        <div class="tlm"><span>📍 TBD — Salesforce Events app</span></div>
+      </div>
+    </div>
+
+  </div></div>
+
+  <!-- ── WEDNESDAY SEP 16 ── -->
+  <div class="tl-day" id="tl-day2" style="display:none"><div class="tl">
+
+    <div class="tli" data-cat="mfg">
+      <div class="tldo" style="background:#0066CC;box-shadow:0 0 0 3px #0066CC;"></div>
+      <div class="tlc" style="border-left:4px solid #0066CC;background:linear-gradient(to right,#f0f6ff,#fff);">
+        <div class="tlt" style="color:#0066CC;">8:30 AM <span class="tlb" style="background:#E8640A;color:#fff;">⭐ KEYNOTE</span> <span class="tlb" style="background:#0066CC;color:#fff;">🏭 MFG</span> <span style="font-size:9px;color:var(--muted);">12:30 PM GMT-3</span></div>
+        <h4 class="en"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1781726992891001lA5J" target="_blank">Manufacturing Keynote: Building an Agentic Future Together</a></h4>
+        <h4 class="pt">Keynote de Manufatura: Construindo um Futuro Agêntico Juntos</h4>
+        <div class="en">The Manufacturing keynote — Agentforce use cases, product roadmap, and customer stories across the full manufacturing lifecycle.</div>
+        <div class="pt">O keynote de Manufatura — casos de uso Agentforce, roadmap de produto e histórias de clientes em todo o ciclo de vida da manufatura.</div>
+        <div class="tlm"><span>📍 Moscone West, L2, Keynote Room 2020</span><span>⏱ 8:30–9:20 AM PDT · 12:30 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli" data-cat="mkt">
+      <div class="tldo" style="background:#C44BC4;box-shadow:0 0 0 3px #C44BC4;"></div>
+      <div class="tlc" style="border-left:4px solid #C44BC4;background:linear-gradient(to right,#fdf5ff,#fff);">
+        <div class="tlt" style="color:#C44BC4;">8:00 AM <span class="tlb" style="background:#C44BC4;color:#fff;">📣 MARKETING</span> <span style="background:rgba(0,0,0,0.12);color:#fff;font-size:8px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:2px 6px;border-radius:3px;">⭐ Reserved</span> <span style="font-size:9px;color:var(--muted);">12:00 PM GMT-3</span></div>
+        <h4 class="en">Get Started with Marketing Cloud Next</h4>
+        <h4 class="pt">Comece com o Marketing Cloud Next</h4>
+        <div class="en">Hands-on intro to Marketing Cloud Next — the new platform generation. Learn key capabilities, migration paths, and how to get value fast. Reserved seating — secure your spot in advance.</div>
+        <div class="pt">Introdução prática ao Marketing Cloud Next — a nova geração da plataforma. Capacidades principais, caminhos de migração e como extrair valor rapidamente.</div>
+        <div class="tlm"><span>📍 Marriott, Level B2, Salon 10-14</span><span>⏱ 8:00–9:00 AM PDT · 12:00 PM GMT-3</span><span class="reserved">⭐ Reserved Seating</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~12 min — walk to Moscone South, LL</h4></div>
+    </div>
+
+    <div class="tli" data-cat="br">
+      <div class="tldo" style="background:#009C3B;box-shadow:0 0 0 2px #009C3B;"></div>
+      <div class="tlc" style="border-left:4px solid #009C3B;background:linear-gradient(to right,#f0fff4,#fff);">
+        <div class="tlt" style="color:#009C3B;">9:00 AM <span class="tlb" style="background:#009C3B;color:#FFDF00;">🇧🇷 BRAZILIAN SESSION</span> <span style="font-size:9px;color:var(--muted);">1:00 PM GMT-3</span></div>
+        <h4 class="en"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1779455182215001blTl" target="_blank">How Relationship Bankers Get AI Insights Instantly</a></h4>
+        <h4 class="pt">Como Gerentes de Relacionamento Obtêm Insights de IA Instantaneamente</h4>
+        <div class="en">Bradesco reveals how they put real-time AI insights in the hands of relationship managers — model applicable to manufacturing sales reps.</div>
+        <div class="pt">O Bradesco revela como colocou insights de IA em tempo real nas mãos de gerentes — aplicável a representantes de vendas de Manufatura.</div>
+        <div class="tlm"><span>📍 Moscone South, LL, Content Pavilion, Stage 4</span><span>⏱ 9:00–9:20 AM PDT · 1:00 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~12 min — walk to Moscone West, L3</h4></div>
+    </div>
+
+    <div class="tli" data-cat="eu">
+      <div class="tldo" style="background:#00875A;box-shadow:0 0 0 3px #00875A;"></div>
+      <div class="tlc" style="border-left:4px solid #00875A;background:linear-gradient(to right,#f0fff8,#fff);">
+        <div class="tlt" style="color:#00875A;">10:00 AM <span class="tlb" style="background:#E8640A;color:#fff;">⭐ KEYNOTE</span> <span class="tlb" style="background:#00875A;color:#fff;">⚡ E&amp;U</span> <span style="font-size:9px;color:var(--muted);">2:00 PM GMT-3</span></div>
+        <h4 class="en"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1781726992134001lXMB" target="_blank">Energy and Utilities Keynote: The Agents Powering Our World</a></h4>
+        <h4 class="pt">Keynote de E&amp;U: Os Agentes que Movem Nosso Mundo</h4>
+        <div class="en">The E&U keynote — how agentic AI is transforming utilities: grid management, customer experience, and field operations.</div>
+        <div class="pt">O keynote de E&U — como a IA agêntica transforma utilities: gestão de grid, CX e operações de campo.</div>
+        <div class="tlm"><span>📍 Moscone West, L3, Keynote Room 3001</span><span>⏱ 10:00–10:50 AM PDT · 2:00 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~5 min — walk to L2, Learning Lab Theater B</h4></div>
+    </div>
+
+    <div class="tli" data-cat="br">
+      <div class="tldo" style="background:#009C3B;box-shadow:0 0 0 2px #009C3B;"></div>
+      <div class="tlc" style="border-left:4px solid #009C3B;background:linear-gradient(to right,#f0fff4,#fff);">
+        <div class="tlt" style="color:#009C3B;">11:00 AM <span class="tlb" style="background:#009C3B;color:#FFDF00;">🇧🇷 BRAZILIAN SESSION</span> <span style="font-size:9px;color:var(--muted);">3:00 PM GMT-3</span></div>
+        <h4 class="en"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1779109497265001jPZr" target="_blank">How iFood Built an AI Agent to Handle a Viral Moment</a></h4>
+        <h4 class="pt">Como o iFood Construiu um Agente de IA para Lidar com um Momento Viral</h4>
+        <div class="en">iFood shares how they built and deployed an AI agent in 36 hours that handled a massive viral demand spike — ROI in days.</div>
+        <div class="pt">iFood conta como construíram um agente de IA em 36 horas para lidar com um pico viral de demanda — ROI em dias.</div>
+        <div class="tlm"><span>📍 Moscone West, L2, Learning Lab Theater B</span><span>⏱ 11:00–11:20 AM PDT · 3:00 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~5 min — walk to L3, Room 3018</h4></div>
+    </div>
+
+    <div class="tli" data-cat="mfg">
+      <div class="tldo" style="background:#0066CC;box-shadow:0 0 0 2px #0066CC;"></div>
+      <div class="tlc" style="border-left:4px solid #0066CC;background:linear-gradient(to right,#f0f6ff,#fff);">
+        <div class="tlt" style="color:#0066CC;">11:30 AM <span class="tlb" style="background:#0066CC;color:#fff;">🏭 MFG</span> <span style="font-size:9px;color:var(--muted);">3:30 PM GMT-3</span></div>
+        <h4 class="en"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1782927030907001JbaZ" target="_blank">Mitigate Supply Chain Risk With Unified Data</a></h4>
+        <h4 class="pt">Mitigando Risco na Cadeia de Suprimentos com Dados Unificados</h4>
+        <div class="en">How manufacturers use unified data and AI to anticipate supply chain disruptions before they impact production.</div>
+        <div class="pt">Como fabricantes usam dados unificados e IA para antecipar rupturas na cadeia de suprimentos antes de impactarem a produção.</div>
+        <div class="tlm"><span>📍 Moscone West, L3, Room 3018</span><span>⏱ 11:30 AM–12:10 PM PDT · 3:30 PM GMT-3</span></div>
+      </div>
+    </div>
+
+
+    <div class="tli" data-cat="eu">
+      <div class="tldo" style="background:#00875A;box-shadow:0 0 0 3px #00875A;"></div>
+      <div class="tlc" style="border-left:4px solid #00875A;background:linear-gradient(to right,#f0fff8,#fff);">
+        <div class="tlt" style="color:#00875A;">12:00 PM <span class="tlb" style="background:#00875A;color:#fff;">⚡ E&amp;U</span> <span style="background:rgba(244,100,10,0.85);color:#fff;font-size:8px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:2px 6px;border-radius:3px;">⭐ Executive</span> <span style="font-size:9px;color:var(--muted);">4:00 PM GMT-3</span></div>
+        <h4 class="en">Energy &amp; Utilities Exclusive: Brazilian Utilities Executive Meeting</h4>
+        <h4 class="pt">E&amp;U Exclusivo: Reunião Executiva com Utilities Brasileiras</h4>
+        <div class="en">Exclusive session with the Salesforce Global Industry Advisor for E&U — Brazilian utilities executives discuss strategy, Agentforce use cases, and roadmap priorities. Confirm with Mariana Meira.</div>
+        <div class="pt">Sessão exclusiva com o Consultor Global de Indústria de E&U da Salesforce — executivos de utilities brasileiras discutem estratégia, casos de uso Agentforce e prioridades de roadmap. Confirmar com Mariana Meira.</div>
+        <div class="tlm"><span>📍 TBD — confirm with Mariana Meira</span><span>⏱ 12:00 PM PDT · 4:00 PM GMT-3</span><span class="reserved">⭐ Executive Meeting</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~5 min — walk to L2, Keynote Room 2006</h4></div>
+    </div>
+
+    <div class="tli" data-cat="auto">
+      <div class="tldo" style="background:#7B4FBB;box-shadow:0 0 0 3px #7B4FBB;"></div>
+      <div class="tlc" style="border-left:4px solid #7B4FBB;background:linear-gradient(to right,#f8f5ff,#fff);">
+        <div class="tlt" style="color:#7B4FBB;">12:30 PM <span class="tlb" style="background:#E8640A;color:#fff;">⭐ KEYNOTE</span> <span class="tlb" style="background:#7B4FBB;color:#fff;">🚗 AUTO</span> <span style="font-size:9px;color:var(--muted);">4:30 PM GMT-3</span></div>
+        <h4 class="en"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1781726990895001lQFh" target="_blank">Automotive Keynote: Drive Customer Loyalty with Agentic AI</a></h4>
+        <h4 class="pt">Keynote Automotivo: Fidelização com IA Agêntica</h4>
+        <div class="en">Loyalty and agentic AI strategies from leading automotive OEMs — dealer network management, after-sales, and connected vehicle experiences.</div>
+        <div class="pt">Estratégias de fidelização com IA agêntica de OEMs automotivos — gestão de revendas, pós-venda e veículos conectados.</div>
+        <div class="tlm"><span>📍 Moscone West, L2, Keynote Room 2006</span><span>⏱ 12:30–1:20 PM PDT · 4:30 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~5 min — walk to L3, Room 3022</h4></div>
+    </div>
+
+    <div class="tli" data-cat="eu">
+      <div class="tldo" style="background:#00875A;box-shadow:0 0 0 2px #00875A;"></div>
+      <div class="tlc" style="border-left:4px solid #00875A;background:linear-gradient(to right,#f0fff8,#fff);">
+        <div class="tlt" style="color:#00875A;">1:30 PM <span class="tlb" style="background:#00875A;color:#fff;">⚡ E&amp;U</span> <span style="font-size:9px;color:var(--muted);">5:30 PM GMT-3</span></div>
+        <h4 class="en"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1779838576846001GQbS" target="_blank">A Utility's Journey: From Complexity to Intelligence</a></h4>
+        <h4 class="pt">A Jornada de uma Utility: Da Complexidade à Inteligência</h4>
+        <div class="en">Real-world digital transformation from an energy utility — data complexity, customer segmentation, and AI-driven operations.</div>
+        <div class="pt">Transformação digital real de uma empresa de energia — dados complexos, segmentação de clientes e operações por IA.</div>
+        <div class="tlm"><span>📍 Moscone West, L3, Room 3022</span><span>⏱ 1:30–2:10 PM PDT · 5:30 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~12 min — walk to Moscone South, LL · ☕ good time for a break</h4></div>
+    </div>
+
+    <div class="tli" data-cat="mkt">
+      <div class="tldo" style="background:#C44BC4;box-shadow:0 0 0 2px #C44BC4;"></div>
+      <div class="tlc" style="border-left:4px solid #C44BC4;background:linear-gradient(to right,#fdf5ff,#fff);">
+        <div class="tlt" style="color:#C44BC4;">8:30 AM <span class="tlb" style="background:#C44BC4;color:#fff;">📣 MARKETING</span> <span style="font-size:9px;color:var(--muted);">12:30 PM GMT-3</span></div>
+        <h4 class="en">Transforming Customer Loyalty Through AI Decisioning</h4>
+        <h4 class="pt">Transformando a Fidelidade do Cliente com Decisões por IA</h4>
+        <div class="en">AI-powered decisioning reshaping loyalty programs — how to move from rules-based to truly intelligent, real-time customer engagement.</div>
+        <div class="pt">Decisão baseada em IA remodelando programas de fidelização — como sair de regras para engajamento inteligente e em tempo real.</div>
+        <div class="tlm"><span>📍 Moscone South, LL, Content Pavilion, Stage 2</span><span>⏱ 8:30–9:10 AM PDT · 12:30 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~15 min — walk to Moscone North, LL, Campground</h4></div>
+    </div>
+
+    <div class="tli" data-cat="mkt">
+      <div class="tldo" style="background:#C44BC4;box-shadow:0 0 0 2px #C44BC4;"></div>
+      <div class="tlc" style="border-left:4px solid #C44BC4;background:linear-gradient(to right,#fdf5ff,#fff);">
+        <div class="tlt" style="color:#C44BC4;">11:30 AM <span class="tlb" style="background:#C44BC4;color:#fff;">📣 MARKETING</span> <span style="font-size:9px;color:var(--muted);">3:30 PM GMT-3</span></div>
+        <h4 class="en">Beyond SMS: What RCS Unlocks for Your Customer Conversations</h4>
+        <h4 class="pt">Além do SMS: O que o RCS Libera para as Suas Conversas com Clientes</h4>
+        <div class="en">RCS (Rich Communication Services) enables branded, interactive messaging beyond SMS — see real use cases and how to get started.</div>
+        <div class="pt">O RCS (Rich Communication Services) permite mensagens interativas e com marca além do SMS — casos de uso reais e como começar.</div>
+        <div class="tlm"><span>📍 Moscone North, LL, Campground, Theater 3</span><span>⏱ 11:30–11:50 AM PDT · 3:30 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~15 min — walk back to Moscone South, LL</h4></div>
+    </div>
+
+    <div class="tli" data-cat="eu">
+      <div class="tldo" style="background:#00875A;box-shadow:0 0 0 2px #00875A;"></div>
+      <div class="tlc" style="border-left:4px solid #00875A;background:linear-gradient(to right,#f0fff8,#fff);">
+        <div class="tlt" style="color:#00875A;">2:00 PM <span class="tlb" style="background:#00875A;color:#fff;">⚡ E&amp;U</span> <span style="font-size:9px;color:var(--muted);">6:00 PM GMT-3</span></div>
+        <h4 class="en"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1780057134447001FPVr" target="_blank">How Energy Retailers Are Reinventing Customer Experience</a></h4>
+        <h4 class="pt">Como Varejistas de Energia Estão Reinventando a Experiência do Cliente</h4>
+        <div class="en">Energy retailers share how they're using Salesforce to deliver personalized, proactive CX in a competitive market.</div>
+        <div class="pt">Varejistas de energia mostram como usam Salesforce para CX proativa e personalizada em mercado competitivo.</div>
+        <div class="tlm"><span>📍 Moscone South, LL, Content Pavilion, Stage 2</span><span>⏱ 2:00–2:20 PM PDT · 6:00 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~12 min — walk to Moscone West, L2</h4></div>
+    </div>
+
+    <div class="tli" data-cat="auto mfg">
+      <div class="tldo" style="background:#7B4FBB;box-shadow:0 0 0 2px #7B4FBB;"></div>
+      <div class="tlc" style="border-left:4px solid #7B4FBB;background:linear-gradient(to right,#f8f5ff,#fff);">
+        <div class="tlt" style="color:#7B4FBB;">3:00 PM <span class="tlb" style="background:#7B4FBB;color:#fff;">🚗 AUTO</span> <span class="tlb" style="background:#0066CC;color:#fff;">🏭 MFG</span> <span style="font-size:9px;color:var(--muted);">7:00 PM GMT-3</span></div>
+        <h4 class="en"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1780064861494001F7LF" target="_blank">Fueling AI Agents: The Shift to Headless Operations</a></h4>
+        <h4 class="pt">Alimentando Agentes de IA: A Mudança para Operações Headless</h4>
+        <div class="en">How AI agents operate headlessly across back-office and customer-facing systems — key for manufacturing and automotive ERP integrations.</div>
+        <div class="pt">Como agentes de IA operam de forma headless — essencial para integrações ERP em Manufatura e Automotivo.</div>
+        <div class="tlm"><span>📍 Moscone West, L2, Learning Lab Theater A</span><span>⏱ 3:00–3:20 PM PDT · 7:00 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~5 min — walk to L3, Theater 17 or Room 2024 L2</h4></div>
+    </div>
+
+    <div class="tli" data-cat="mkt">
+      <div class="tldo" style="background:#C44BC4;box-shadow:0 0 0 2px #C44BC4;"></div>
+      <div class="tlc" style="border-left:4px solid #C44BC4;background:linear-gradient(to right,#fdf5ff,#fff);">
+        <div class="tlt" style="color:#C44BC4;">2:00 PM <span class="tlb" style="background:#C44BC4;color:#fff;">📣 MARKETING</span> <span style="font-size:9px;color:var(--muted);">6:00 PM GMT-3</span></div>
+        <h4 class="en">Agentforce Marketing Flow Fundamentals</h4>
+        <h4 class="pt">Fundamentos do Agentforce Marketing Flow</h4>
+        <div class="en">Learn the core building blocks of Agentforce Marketing Flow — how to create, orchestrate, and activate AI-driven marketing journeys across every channel.</div>
+        <div class="pt">Aprenda os fundamentos do Agentforce Marketing Flow — como criar, orquestrar e ativar jornadas de marketing por IA em todos os canais.</div>
+        <div class="tlm"><span>📍 Moscone West, L2, Learning Lab Theater B</span><span>⏱ 2:00–2:20 PM PDT · 6:00 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~5 min — walk to Room 2024, L2</h4></div>
+    </div>
+
+    <div class="tli" data-cat="mkt">
+      <div class="tldo" style="background:#C44BC4;box-shadow:0 0 0 2px #C44BC4;"></div>
+      <div class="tlc" style="border-left:4px solid #C44BC4;background:linear-gradient(to right,#fdf5ff,#fff);">
+        <div class="tlt" style="color:#C44BC4;">2:30 PM <span class="tlb" style="background:#C44BC4;color:#fff;">📣 MARKETING</span> <span style="font-size:9px;color:var(--muted);">6:30 PM GMT-3</span></div>
+        <h4 class="en">Ask, Align, Act: Turn Marketing Data Into Decisions Anywhere</h4>
+        <h4 class="pt">Pergunte, Alinhe, Aja: Transforme Dados de Marketing em Decisões</h4>
+        <div class="en">How to use AI to query, analyze, and act on marketing data conversationally — enabling faster decisions across campaigns, segments, and channels.</div>
+        <div class="pt">Como usar IA para consultar, analisar e agir sobre dados de marketing de forma conversacional — decisões mais rápidas em campanhas, segmentos e canais.</div>
+        <div class="tlm"><span>📍 Moscone West, L2, Room 2024</span><span>⏱ 2:30–3:10 PM PDT · 6:30 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~15 min — walk to InterCon, L5, Ballroom A</h4></div>
+    </div>
+
+    <div class="tli" data-cat="mkt">
+      <div class="tldo" style="background:#C44BC4;box-shadow:0 0 0 2px #C44BC4;"></div>
+      <div class="tlc" style="border-left:4px solid #C44BC4;background:linear-gradient(to right,#fdf5ff,#fff);">
+        <div class="tlt" style="color:#C44BC4;">1:30 PM <span class="tlb" style="background:#C44BC4;color:#fff;">📣 MARKETING</span> <span style="background:rgba(0,0,0,0.12);color:#fff;font-size:8px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:2px 6px;border-radius:3px;">⭐ Reserved</span> <span style="font-size:9px;color:var(--muted);">5:30 PM GMT-3</span></div>
+        <h4 class="en">The CDP Playbook: Drive Value Across the Customer Lifecycle</h4>
+        <h4 class="pt">O Playbook do CDP: Gere Valor ao Longo do Ciclo de Vida do Cliente</h4>
+        <div class="en">Roundtable — how to use Salesforce CDP to unify customer data and drive personalized, lifecycle-aware marketing across every touchpoint.</div>
+        <div class="pt">Mesa-redonda — como usar o Salesforce CDP para unificar dados de clientes e impulsionar marketing personalizado em cada ponto de contato.</div>
+        <div class="tlm"><span>📍 InterCon, L5, InterCon Ballroom A, Roundtable 8</span><span>⏱ 1:30–2:30 PM PDT · 5:30 PM GMT-3</span><span class="reserved">⭐ Reserved Seating</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~5 min — walk to L3, Theater 17</h4></div>
+    </div>
+
+    <div class="tli" data-cat="eu">
+      <div class="tldo" style="background:#00875A;box-shadow:0 0 0 2px #00875A;"></div>
+      <div class="tlc" style="border-left:4px solid #00875A;background:linear-gradient(to right,#f0fff8,#fff);">
+        <div class="tlt" style="color:#00875A;">3:30 PM <span class="tlb" style="background:#00875A;color:#fff;">⚡ E&amp;U</span> <span style="font-size:9px;color:var(--muted);">7:30 PM GMT-3</span></div>
+        <h4 class="en"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1780064494645001DLfZ" target="_blank">Transform Field Service for the Modern Utility</a></h4>
+        <h4 class="pt">Transformando o Field Service para a Utility Moderna</h4>
+        <div class="en">How modern utilities use Field Service Lightning and AI to optimize technician dispatch and improve first-time fix rates.</div>
+        <div class="pt">Como utilities modernas usam Field Service Lightning e IA para otimizar despacho de técnicos e reduzir custos.</div>
+        <div class="tlm"><span>📍 Moscone West, L3, Theater 17</span><span>⏱ 3:30–4:10 PM PDT · 7:30 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~5 min — walk to Theater 18, L3</h4></div>
+    </div>
+
+    <div class="tli" data-cat="mkt">
+      <div class="tldo" style="background:#C44BC4;box-shadow:0 0 0 2px #C44BC4;"></div>
+      <div class="tlc" style="border-left:4px solid #C44BC4;background:linear-gradient(to right,#fdf5ff,#fff);">
+        <div class="tlt" style="color:#C44BC4;">4:30 PM <span class="tlb" style="background:#C44BC4;color:#fff;">📣 MARKETING</span> <span style="font-size:9px;color:var(--muted);">8:30 PM GMT-3</span></div>
+        <h4 class="en">Unified Channels: Headless, Data 360, and Beyond</h4>
+        <h4 class="pt">Canais Unificados: Headless, Data 360 e Muito Mais</h4>
+        <div class="en">How headless architecture and Data 360 power true omnichannel marketing — seamless experiences across web, mobile, email, and messaging.</div>
+        <div class="pt">Como arquitetura headless e Data 360 potencializam marketing omnichannel de verdade — experiências contínuas em web, mobile, e-mail e mensageria.</div>
+        <div class="tlm"><span>📍 Moscone West, L3, Theater 18</span><span>⏱ 4:30–4:50 PM PDT · 8:30 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli" data-cat="all">
+      <div class="tldo kn"></div>
+      <div class="tlc kn">
+        <div class="tlt">6:00 PM <span class="tlb" style="background:#5A6A78;color:#fff;">🎉 DREAMFEST</span></div>
+        <h4 class="en">Dreamfest at the Giants Ballpark</h4><h4 class="pt">Dreamfest no Giants Ballpark</h4>
+        <div class="en">A-list performers. Concert for Kids supporting UCSF Benioff Children's Hospitals. Doors at 6PM. Badge required, no large bags!</div>
+        <div class="pt">Artistas de renome. Show beneficente UCSF Benioff. Portas às 18h. Crachá obrigatório, sem bolsas grandes!</div>
+        <div class="tlm"><span>📍 Oracle Park (Giants Ballpark)</span><span>⏱ 6:00–10:00 PM PDT · 10:00 PM GMT-3</span></div>
+      </div>
+    </div>
+
+  </div></div>
+
+  <!-- ── THURSDAY SEP 17 ── -->
+  <div class="tl-day" id="tl-day3" style="display:none"><div class="tl">
+
+    <div class="tli" data-cat="mfg">
+      <div class="tldo" style="background:#0066CC;box-shadow:0 0 0 2px #0066CC;"></div>
+      <div class="tlc" style="border-left:4px solid #0066CC;background:linear-gradient(to right,#f0f6ff,#fff);">
+        <div class="tlt" style="color:#0066CC;">8:30 AM <span class="tlb" style="background:#0066CC;color:#fff;">🏭 MFG</span> <span style="font-size:9px;color:var(--muted);">12:30 PM GMT-3</span></div>
+        <h4 class="en"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1782865479289001JlDG" target="_blank">Protect Margins Under Pressure with Smarter AI Deal Guidance</a></h4>
+        <h4 class="pt">Protegendo Margens sob Pressão com Orientação de Negócios por IA</h4>
+        <div class="en">How AI-powered deal guidance helps manufacturing sales teams protect margins in complex negotiations.</div>
+        <div class="pt">Como a orientação de negócios por IA ajuda equipes de vendas de Manufatura a proteger margens em negociações complexas.</div>
+        <div class="tlm"><span>📍 Moscone South, LL, Content Pavilion, Stage 3</span><span>⏱ 8:30–9:10 AM PDT · 12:30 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~3 min — same area, walk to Stage 4</h4></div>
+    </div>
+
+    <div class="tli" data-cat="eu">
+      <div class="tldo" style="background:#00875A;box-shadow:0 0 0 2px #00875A;"></div>
+      <div class="tlc" style="border-left:4px solid #00875A;background:linear-gradient(to right,#f0fff8,#fff);">
+        <div class="tlt" style="color:#00875A;">9:00 AM <span class="tlb" style="background:#00875A;color:#fff;">⚡ E&amp;U</span> <span style="font-size:9px;color:var(--muted);">1:00 PM GMT-3</span></div>
+        <h4 class="en"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1783541695551001jd1w" target="_blank">From Data Doubts to Agent-Ready for Utility IT Leaders</a></h4>
+        <h4 class="pt">De Dúvidas sobre Dados ao Agentforce para Líderes de TI de Utilities</h4>
+        <div class="en">Practical guidance for utility IT leaders on building the data foundation needed to deploy AI agents confidently.</div>
+        <div class="pt">Orientações práticas para líderes de TI de utilities sobre como construir a fundação de dados para implantar agentes de IA com confiança.</div>
+        <div class="tlm"><span>📍 Moscone South, LL, Content Pavilion, Stage 4</span><span>⏱ 9:00–9:20 AM PDT · 1:00 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~12 min — walk to Moscone West, L3</h4></div>
+    </div>
+
+    <div class="tli" data-cat="auto mfg">
+      <div class="tldo" style="background:#7B4FBB;box-shadow:0 0 0 2px #7B4FBB;"></div>
+      <div class="tlc" style="border-left:4px solid #7B4FBB;background:linear-gradient(to right,#f8f5ff,#fff);">
+        <div class="tlt" style="color:#7B4FBB;">10:00 AM <span class="tlb" style="background:#7B4FBB;color:#fff;">🚗 AUTO</span> <span class="tlb" style="background:#0066CC;color:#fff;">🏭 MFG</span> <span style="font-size:9px;color:var(--muted);">2:00 PM GMT-3</span></div>
+        <h4 class="en"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1780086316023001xyh1" target="_blank">Beyond the DMS: Building the Connected Dealer Ecosystem</a></h4>
+        <h4 class="pt">Além do DMS: Construindo o Ecossistema de Revendas Conectado</h4>
+        <div class="en">How OEMs and dealers are moving beyond legacy DMS to build connected, data-driven dealer ecosystems with Salesforce.</div>
+        <div class="pt">Como OEMs e revendas vão além do DMS legado para construir ecossistemas de revendas conectados e orientados a dados.</div>
+        <div class="tlm"><span>📍 Moscone West, L3, Room 3018</span><span>⏱ 10:00–10:40 AM PDT · 2:00 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~5 min — walk to L2, Room 2006</h4></div>
+    </div>
+
+    <div class="tli" data-cat="mfg">
+      <div class="tldo" style="background:#0066CC;box-shadow:0 0 0 2px #0066CC;"></div>
+      <div class="tlc" style="border-left:4px solid #0066CC;background:linear-gradient(to right,#f0f6ff,#fff);">
+        <div class="tlt" style="color:#0066CC;">10:30 AM <span class="tlb" style="background:#0066CC;color:#fff;">🏭 MFG</span> <span style="font-size:9px;color:var(--muted);">2:30 PM GMT-3</span></div>
+        <h4 class="en"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1782865488054001JDlD" target="_blank">Manufacturing's Full Lifecycle — Built on Salesforce Core</a></h4>
+        <h4 class="pt">O Ciclo de Vida Completo da Manufatura — Construído no Salesforce Core</h4>
+        <div class="en">How Salesforce Core powers the full manufacturing lifecycle — demand generation through field service and warranty management.</div>
+        <div class="pt">Como o Salesforce Core potencializa todo o ciclo de vida da manufatura — da geração de demanda ao field service e gestão de garantias.</div>
+        <div class="tlm"><span>📍 Moscone West, L2, Room 2006</span><span>⏱ 10:30–11:10 AM PDT · 2:30 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~12 min — walk to Moscone South, LL · 🍜 grab lunch!</h4></div>
+    </div>
+
+    <div class="tli" data-cat="eu">
+      <div class="tldo" style="background:#00875A;box-shadow:0 0 0 2px #00875A;"></div>
+      <div class="tlc" style="border-left:4px solid #00875A;background:linear-gradient(to right,#f0fff8,#fff);">
+        <div class="tlt" style="color:#00875A;">11:00 AM <span class="tlb" style="background:#00875A;color:#fff;">⚡ E&amp;U</span> <span style="font-size:9px;color:var(--muted);">3:00 PM GMT-3</span></div>
+        <h4 class="en"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1779914727074001LzTC" target="_blank">How Engie Built an Agent-Ready Security & Privacy Foundation</a></h4>
+        <h4 class="pt">Como a Engie Construiu uma Fundação de Segurança e Privacidade Pronta para Agentes</h4>
+        <div class="en">Engie's journey to building a secure, privacy-compliant foundation for deploying AI agents across global operations.</div>
+        <div class="pt">A jornada da Engie para construir uma fundação segura e em conformidade para implantar agentes de IA globalmente.</div>
+        <div class="tlm"><span>📍 Moscone South, LL, Content Pavilion, Stage 8</span><span>⏱ 11:00–11:20 AM PDT · 3:00 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~12 min — walk to Moscone West, L2</h4></div>
+    </div>
+
+    <div class="tli" data-cat="auto">
+      <div class="tldo" style="background:#7B4FBB;box-shadow:0 0 0 2px #7B4FBB;"></div>
+      <div class="tlc" style="border-left:4px solid #7B4FBB;background:linear-gradient(to right,#f8f5ff,#fff);">
+        <div class="tlt" style="color:#7B4FBB;">12:00 PM <span class="tlb" style="background:#7B4FBB;color:#fff;">🚗 AUTOMOTIVE</span> <span style="font-size:9px;color:var(--muted);">4:00 PM GMT-3</span></div>
+        <h4 class="en"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1782415588790001Cvl2" target="_blank">The Road Ahead: Agentforce Automotive Roadmap</a></h4>
+        <h4 class="pt">O Caminho à Frente: Roadmap do Agentforce para Automotivo</h4>
+        <div class="en">Salesforce product leaders reveal the Agentforce roadmap for automotive — what's coming in 2026 and beyond.</div>
+        <div class="pt">Líderes de produto da Salesforce revelam o roadmap do Agentforce para automotivo — o que vem em 2026 e além.</div>
+        <div class="tlm"><span>📍 Moscone West, L2, Learning Lab Theater B</span><span>⏱ 12:00–12:20 PM PDT · 4:00 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~5 min — walk to L3, Theater 18</h4></div>
+    </div>
+
+    <div class="tli" data-cat="auto">
+      <div class="tldo" style="background:#7B4FBB;box-shadow:0 0 0 2px #7B4FBB;"></div>
+      <div class="tlc" style="border-left:4px solid #7B4FBB;background:linear-gradient(to right,#f8f5ff,#fff);">
+        <div class="tlt" style="color:#7B4FBB;">12:30 PM <span class="tlb" style="background:#7B4FBB;color:#fff;">🚗 AUTOMOTIVE</span> <span style="font-size:9px;color:var(--muted);">4:30 PM GMT-3</span></div>
+        <h4 class="en"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1780069902002001zhJY" target="_blank">How to Drive Revenue with an In-Vehicle Subscription Store</a></h4>
+        <h4 class="pt">Como Gerar Receita com uma Loja de Assinatura no Veículo</h4>
+        <div class="en">How automakers are monetizing connected vehicles with in-car subscription stores built on Salesforce Commerce.</div>
+        <div class="pt">Como montadoras monetizam veículos conectados com lojas de assinatura no carro construídas no Salesforce Commerce.</div>
+        <div class="tlm"><span>📍 Moscone West, L3, Theater 18</span><span>⏱ 12:30–12:50 PM PDT · 4:30 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~5 min — walk to Room 3022</h4></div>
+    </div>
+
+    <div class="tli" data-cat="eu">
+      <div class="tldo" style="background:#00875A;box-shadow:0 0 0 2px #00875A;"></div>
+      <div class="tlc" style="border-left:4px solid #00875A;background:linear-gradient(to right,#f0fff8,#fff);">
+        <div class="tlt" style="color:#00875A;">1:00 PM <span class="tlb" style="background:#00875A;color:#fff;">⚡ E&amp;U</span> <span style="font-size:9px;color:var(--muted);">5:00 PM GMT-3</span></div>
+        <h4 class="en"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1779839076188001GRzY" target="_blank">Powering Energy & Utilities: Key Solutions & Product Roadmap</a></h4>
+        <h4 class="pt">Potencializando E&amp;U: Soluções Chave e Roadmap de Produto</h4>
+        <div class="en">Deep dive into the Salesforce E&U product roadmap — key solutions for 2026 and what's on the horizon for utilities and energy companies.</div>
+        <div class="pt">Mergulho no roadmap de produto de E&U da Salesforce — soluções chave para 2026 e o que está no horizonte.</div>
+        <div class="tlm"><span>📍 Moscone West, L3, Room 3022</span><span>⏱ 1:00–1:40 PM PDT · 5:00 PM GMT-3</span></div>
+      </div>
+    </div>
+
+    <div class="tli buffer-item" data-cat="buffer">
+      <div class="tldo travel"></div>
+      <div class="tlc travel"><h4>🚶 ~5 min — walk to Theater 17</h4></div>
+    </div>
+
+    <div class="tli" data-cat="br">
+      <div class="tldo" style="background:#009C3B;box-shadow:0 0 0 2px #009C3B;"></div>
+      <div class="tlc" style="border-left:4px solid #009C3B;background:linear-gradient(to right,#f0fff4,#fff);">
+        <div class="tlt" style="color:#009C3B;">2:30 PM <span class="tlb" style="background:#009C3B;color:#FFDF00;">🇧🇷 BRAZILIAN SESSION</span> <span style="font-size:9px;color:var(--muted);">6:30 PM GMT-3</span></div>
+        <h4 class="en"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1779838697602001GCtG" target="_blank">Beyond the Screen: How Globo Connects Millions with CRM & AI</a></h4>
+        <h4 class="pt">Além da Tela: Como a Globo Conecta Milhões com CRM e IA</h4>
+        <div class="en">Brazil's largest media company on how they use Salesforce CRM and AI to create personalized experiences for millions of viewers.</div>
+        <div class="pt">A maior empresa de mídia do Brasil sobre como usa CRM e IA para criar experiências personalizadas para milhões de espectadores.</div>
+        <div class="tlm"><span>📍 Moscone West, L3, Theater 17</span><span>⏱ 2:30–2:50 PM PDT · 6:30 PM GMT-3</span></div>
+      </div>
+    </div>
+
+  </div></div>
+
+</div>
+</div>
+
+
+<!-- BOTTOM NAV -->
+<nav class="bnav">
+  <button class="bi active" onclick="showPage('home',this)">
+    <span class="ico">🏠</span><span class="lbl en">Home</span><span class="lbl pt">Início</span>
+  </button>
+  <button class="bi" onclick="showPage('checklist',this)">
+    <span class="ico">✅</span><span class="lbl en">Checklist</span><span class="lbl pt">Checklist</span>
+  </button>
+  <button class="bi" onclick="showPage('pro',this)">
+    <span class="ico">🗺️</span><span class="lbl en">DF Maps</span><span class="lbl pt">DF Maps</span>
+  </button>
+  <button class="bi" onclick="showPage('sf',this)">
+    <span class="ico">🌉</span><span class="lbl en">São Francisco</span><span class="lbl pt">São Francisco</span>
+  </button>
+  <button class="bi" onclick="showPage('tips',this)">
+    <span class="ico">💬</span><span class="lbl en">General Tips</span><span class="lbl pt">Dicas Gerais</span>
+  </button>
+  <button class="bi" onclick="showPage('sessions',this)">
+    <span class="ico">📅</span><span class="lbl en">Sessions</span><span class="lbl pt">Sessões</span>
+  </button>
+</nav>
+
+<script>
+function showPage(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.bi').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  var navBtns=document.querySelectorAll('.bi');
+  var pageOrder=['home','checklist','pro','sf','tips','sessions'];
+  var idx=pageOrder.indexOf(id);
+  if(idx>=0&&navBtns[idx])navBtns[idx].classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showDay(day,btn){
+  document.querySelectorAll('.tl-day').forEach(d=>d.style.display='none');
+  document.querySelectorAll('.dt').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tl-'+day).style.display='block';
+  btn.classList.add('active');
+}
+function toggleDone(cb){cb.closest('.ci').classList.toggle('done',cb.checked);}
+let activeFilter='all';
+function setFilter(f,btn){
+  activeFilter=f;
+  document.querySelectorAll('.ifbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilter();
+}
+function applyFilter(){
+  document.querySelectorAll('.tl-day').forEach(day=>{
+    const items=[...day.querySelectorAll('.tli')];
+    items.forEach(item=>{
+      if(item.classList.contains('buffer-item')){item.style.display='';return;}
+      const cats=(item.dataset.cat||'').split(' ');
+      const show=activeFilter==='all'||cats.includes(activeFilter)||cats.includes('all');
+      item.style.display=show?'':'none';
+    });
+    items.forEach((item,i)=>{
+      if(!item.classList.contains('buffer-item'))return;
+      let prevVis=false,nextVis=false;
+      for(let j=i-1;j>=0;j--){if(!items[j].classList.contains('buffer-item')){prevVis=items[j].style.display!=='none';break;}}
+      for(let j=i+1;j<items.length;j++){if(!items[j].classList.contains('buffer-item')){nextVis=items[j].style.display!=='none';break;}}
+      item.style.display=(prevVis||nextVis)?'':'none';
+    });
+  });
+}
+let lang='en';
+function toggleLang(){
+  const btn=document.getElementById('langBtn');
+  if(lang==='en'){lang='pt';document.body.classList.add('lang-pt');btn.textContent='🇺🇸 EN';}
+  else{lang='en';document.body.classList.remove('lang-pt');btn.textContent='🇧🇷 PT';}
+}
+</script>
+</body>
+</html>

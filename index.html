@@ -191,7 +191,7 @@ body.lang-pt .ti div.pt{font-size:12px!important;color:var(--muted)!important;li
 
 <header class="topbar">
   <div class="topbar-title">Manufatura | <span>Dreamforce 2026</span></div>
-  <button class="lang-btn" onclick="toggleLang()" id="langBtn">🇧🇷 PT</button>
+  <button class="lang-btn" onclick="toggleLang()" id="langBtn"><span id="langActive" style="font-weight:800;">🇧🇷 PT</span> <span style="opacity:0.45;font-weight:400;">· EN</span></button>
 </header>
 
 <!-- ═══ HOME ═══ -->
@@ -640,12 +640,12 @@ body.lang-pt .ti div.pt{font-size:12px!important;color:var(--muted)!important;li
     <div class="tli" data-cat="all">
       <div class="tldo" style="background:#5A6A78;box-shadow:0 0 0 2px #5A6A78;"></div>
       <div class="tlc" style="border-left:4px solid #5A6A78;background:linear-gradient(to right,#f5f7fa,#fff);">
-        <div class="tlt" style="color:#5A6A78;">11:00 AM <span class="tlb" style="background:#5A6A78;color:#fff;">🪪 CREDENCIAMENTO</span> <span style="font-size:9px;color:var(--muted);">3:00 PM GMT-3</span></div>
+        <div class="tlt" style="color:#5A6A78;">5:30 PM <span class="tlb" style="background:#5A6A78;color:#fff;">🪪 CREDENCIAMENTO</span> <span style="font-size:9px;color:var(--muted);">9:30 PM GMT-3</span></div>
         <h4 class="en">Badge Pickup &amp; Event Registration</h4>
         <h4 class="pt">Cadastro no Evento e Retirada dos Crachás</h4>
-        <div class="en">Pick up your badge at Moscone West, Lobby Level. All attendees must present their confirmation email and photo ID. Avoid long lines on Day 1 — do this today!</div>
-        <div class="pt">Retire seu crachá no Moscone West, Lobby Level. Todos os participantes devem apresentar e-mail de confirmação e documento com foto. Evite filas no Dia 1 — faça isso hoje!</div>
-        <div class="tlm"><span>📍 Moscone West, Lobby Level</span><span>⏱ 11:00 AM PDT · 3:00 PM GMT-3</span></div>
+        <div class="en">Pick up your badge at Moscone West, Lobby Level. All attendees must present their confirmation email and photo ID. Ponto de Encontro - Hotel Hall do Intercontinental, 888 Howard St.</div>
+        <div class="pt">Retire seu crachá no Moscone West, Lobby Level. Todos os participantes devem apresentar e-mail de confirmação e documento com foto. Ponto de Encontro - Hotel Hall do Intercontinental, 888 Howard St.</div>
+        <div class="tlm"><span>📍 Intercontinental · 888 Howard St</span><span>⏱ 5:30 PM PDT · 9:30 PM GMT-3</span></div>
       </div>
     </div>
 
@@ -1405,12 +1405,19 @@ function applyFilter(){
     });
   });
 }
-let lang='en';
+let lang='pt';
 function toggleLang(){
+  const active=document.getElementById('langActive');
   const btn=document.getElementById('langBtn');
-  if(lang==='en'){lang='pt';document.body.classList.add('lang-pt');btn.textContent='🇺🇸 EN';}
-  else{lang='en';document.body.classList.remove('lang-pt');btn.textContent='🇧🇷 PT';}
+  if(lang==='en'){
+    lang='pt';document.body.classList.add('lang-pt');
+    btn.innerHTML='<span id="langActive" style="font-weight:800;">🇧🇷 PT</span> <span style="opacity:0.45;font-weight:400;">· EN</span>';
+  } else {
+    lang='en';document.body.classList.remove('lang-pt');
+    btn.innerHTML='<span id="langActive" style="font-weight:800;">🇺🇸 EN</span> <span style="opacity:0.45;font-weight:400;">· PT</span>';
+  }
 }
+document.addEventListener('DOMContentLoaded',function(){document.body.classList.add('lang-pt');});
 </script>
 </body>
 </html>
